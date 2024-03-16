@@ -1,0 +1,488 @@
+﻿@model VerificationSystem.DB.Inquiry
+@{
+    ViewBag.Title = "Index";
+    long[] resIDs = ViewBag.ResidenceIDS;
+    long[] workOfficeIDs = ViewBag.WorkOfficeIDS;
+    long[] bankstatementIDs = ViewBag.BankStatementIDS;
+    long[] salaryslipIDs = ViewBag.SalarySlipIDS;
+    long[] tenantIDs = ViewBag.TenantIDS;
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <h3><strong>Inquiry Complete Details</strong></h3>
+                    </div>
+                  
+                </div>
+
+            </div>
+            <!-- /.box-header -->
+
+
+            <div class="box-body">
+
+                <!-- inquiry ID  , report button and status row... -->
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                        <div class="text-left">
+                            <h4 class="form-inline">Inquiry #   <strong>@Model.InquiryId </strong>  </h4>
+                        </div>
+                    </div>
+
+                    
+
+
+                    <div class="col-xs-4  col-sm-4 col-md-4 col-lg-4">
+                        <div class="text-right">
+                            <h4 class="form-inline">Status:   <strong>@Model.Status</strong>  </h4>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <!-- Expandable Accordion for inquiry detail row..... -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" style="display:block; text-decoration:none;">
+                                            <li class="glyphicon glyphicon-triangle-bottom"></li><strong>&nbsp; Expand To View Inquiry Master Details</strong>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse3" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td width="25%"><h5>Applicant Name:<strong>@Model.AppName</strong></h5></td>
+                                                <td width="25%"><h5>Applicant Contact #:<strong>@Model.AppContact</strong></h5></td>
+                                                <td width="25%"><h5>Applicant CNIC #:<strong>@Model.AppCNIC</strong></h5></td>
+                                                <td width="25%"><h5>Branch:<strong>@Model.BranchName</strong></h5></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td width="25%"><h5>Company:   <strong>@Model.CompanyName</strong>  </h5></td>
+                                                <td width="25%"><h5 class="form-inline">Customer Branch:   <strong>@Model.CustomerBranchName</strong>  </h5></td>
+                                                <td width="25%"><h5 class="form-inline">Product:   <strong>@Model.Product.Name</strong>  </h5></td>
+                                                <td width="25%"><h5 class="form-inline"></h5></td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="3">
+                                                    <h5 class="form-inline">
+                                                        Status Description:  <strong>
+                                                            @if (@Model.StatusDescription != null)
+                                                            { @Model.StatusDescription}
+                                                            else
+                                                            { <text>No Status Description Yet</text> }
+                                                        </strong>
+                                                    </h5>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+
+                <!-- Main Detail body. row start-->
+
+                @Html.Partial("_InquiryDetailMainBody", Model, new ViewDataDictionary { { "ScriptSection", false } })
+
+
+                <!-- Main Detail body. row end-->
+
+
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
+
+
+<!-- Image Display Modal -->
+<div id="myModal" class="modal col-xs-9">
+    <!-- The Close Button -->
+    <span class="closeImg" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+
+    <!-- Modal Caption (Image Text) -->
+    <div id="caption"></div>
+</div>
+<div id="myModal" class="modal">
+    <span class="closeImg">×</span>
+    <div id="caption"></div>
+    <img class="modal-content" id="img01">
+</div>
+
+
+
+
+@section Styles
+{
+    @Styles.Render("~/Content/jqueryui")
+
+
+    <style type="text/css">
+        dd {
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+
+        .dl-horizontal dt {
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        .dl-horizontal dd {
+            border-bottom-style: inset;
+        }
+
+        @@media (min-width: 768px) {
+            .dl-horizontal dt {
+                float: left;
+                width: 180px;
+                clear: left;
+                text-overflow: ellipsis;
+                text-align: left;
+                margin-top: 5px;
+            }
+
+            .dl-horizontal dd {
+                margin-left: 190px;
+                border-bottom-style: inset;
+            }
+
+                .dl-horizontal dd:before,
+                .dl-horizontal dd:after {
+                    display: table;
+                    content: " ";
+                }
+
+                .dl-horizontal dd:after {
+                    clear: both;
+                }
+
+                .dl-horizontal dd:before,
+                .dl-horizontal dd:after {
+                    display: table;
+                    content: " ";
+                }
+
+                .dl-horizontal dd:after {
+                    clear: both;
+                }
+        }
+
+
+        dl {
+            font-family: sans-serif;
+        }
+
+        .ui-tabs .ui-tabs-nav li {
+            font-family: 'Source Sans Pro',sans-serif;
+            font-weight: bold;
+            color: rgb(0,0,0);
+        }
+
+
+        .ui-widget-header {
+            border: transparent;
+            background: transparent;
+        }
+
+        .back-to-top {
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+        }
+
+
+
+        .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+            border: #337ab7;
+            background: #337ab7;
+            color: #ffffff;
+        }
+
+        .myimage {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .myimage:hover {
+                opacity: 0.7;
+            }
+
+        @@-webkit-keyframes zoom {
+            from {
+                -webkit-transform: scale(0);
+            }
+
+            to {
+                -webkit-transform: scale(1);
+            }
+        }
+
+        @@keyframes zoom {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        /*The Modal (background)*/
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        }
+
+        /* Modal Content (Image) */
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            /*max-width:40%;
+                                                height:480px;*/
+        }
+
+        /* Caption of Modal Image (Image Text) - Same Width as the Image */
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 200px;
+        }
+
+        /* Add Animation - Zoom in the Modal */
+        .modal-content, #caption {
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: 0.6s;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+
+        /* The Close Button */
+        .closeImg {
+            position: absolute;
+            top: 30px;
+            right: 280px; /*right: 500px;*/
+            color: #f1f1f1;
+            font-size: 100px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+            .closeImg:hover,
+            .closeImg:focus {
+                color: #bbb;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        /* 100% Image Width on Smaller Screens */
+        @@media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+            }
+
+            .closeImg {
+                right: 10px;
+            }
+        }
+    </style>
+}
+
+@section Scripts{
+
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/Gridmvc")
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    @Html.Partial("_InquiryDetailMainBody", Model, new ViewDataDictionary { { "ScriptSection", true } })
+
+    <script type="text/javascript">
+        $(function () {
+            //$("#tabs-inquiry-detail").tabs();
+            $("#tabs-verification-applicant").tabs();
+            $("#tabs-verification-spouse1").tabs();
+            $("#tabs-verification-spouse2").tabs();
+
+            $("#tabs-verification-guarantor1").tabs();
+            $("#tabs-verification-guarantor2").tabs();
+
+            $("#tabs-verification-ref1").tabs();
+            $("#tabs-verification-ref2").tabs();
+            $("#tabs-verification-ref3").tabs();
+            // $("#Tabs-inquiry-Guarantor").tabs();
+            // $("#tab-refree").tabs();
+
+
+            @if (resIDs != null)
+            {
+                for (int i = 0; i < resIDs.Length; i++)
+                {
+                    @:$("#" + "@resIDs[i]" + "tabs-residence-main").tabs();
+                    @:$("#" + "@resIDs[i]" + "tabs-residence-detail").tabs();
+                    @:$("#" + "@resIDs[i]" + "tabs-residence-status").tabs();
+                }
+            }
+            @if (workOfficeIDs != null)
+            {
+                for (int i = 0; i < workOfficeIDs.Length; i++)
+                {
+                    @:$("#" + "@workOfficeIDs[i]" + "tabs-workoffice-main").tabs();
+
+                    @:$("#" + "@workOfficeIDs[i]" + "tabs-workoffice-detail").tabs();
+
+                    @:$("#" + "@workOfficeIDs[i]" + "tabs-workoffice-status").tabs();
+                                                                }
+            }
+            @if (salaryslipIDs != null)
+            {
+                for (int i = 0; i < salaryslipIDs.Length; i++)
+                {
+                    @:$("#" + "@salaryslipIDs[i]" + "tabs-salaryslip-main").tabs();
+                    @:$("#" + "@salaryslipIDs[i]" + "tabs-salaryslip-detail").tabs();
+                    @:$("#" + "@salaryslipIDs[i]" + "tabs-salaryslip-status").tabs();
+                }
+            }
+
+            @if (tenantIDs!=null)
+            {
+                for (int i = 0; i < tenantIDs.Length; i++)
+                {
+                    @:$("#" + "@tenantIDs[i]" + "tabs-tenant-main").tabs();
+                    @:$("#" + "@tenantIDs[i]" + "tabs-tenant-detail").tabs();
+                    @:$("#" + "@tenantIDs[i]" + "tabs-tenant-status").tabs();
+                }
+            }
+            @if (bankstatementIDs!=null)
+            {
+                for (int i = 0; i < bankstatementIDs.Length; i++)
+                {
+                    @:$("#" + "@bankstatementIDs[i]" + "tabs-bankstatement-main").tabs();
+                    @:$("#" + "@bankstatementIDs[i]" + "tabs-bankstatement-detail").tabs();
+                    @:$("#" + "@bankstatementIDs[i]" + "tabs-bankstatement-status").tabs();
+                }
+            }
+
+        });
+
+
+        $(document).ready(function () {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 140) {
+                    $('#back-to-top').fadeIn();
+                }
+                else {
+                    $('#back-to-top').fadeOut();
+                }
+            });
+            // scroll body to 0px on click
+            $('#back-to-top').click(function () {
+                $("html, body").animate({ scrollTop: 0 }, 600);
+                return false;
+            });
+
+
+        });
+
+
+
+        function ImageOnClick(src) {
+            var modalImage = $('#img01')[0];
+            modalImage.src = src.src;
+            modalImage.allt = src.alt;
+
+            var modal = document.getElementById('myModal');
+            modal.style.display = "block";
+
+            var captionText = $('#caption')[0];
+            captionText.innerHTML = src.alt;
+
+        }
+
+
+
+        function SaveAddress(formName, personType, verificationType) {
+            if ($('#' + formName).valid() == false) {
+                toastr.error("Some required field are missing.", personType + ' ' + verificationType, { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                return;
+            }
+
+            ShowLoader(true, "Please wait your request is proccessing...");
+
+            var dataToPost = $('#' + formName).serializeObject();
+            $.post('@Url.Action("Address", "Inquiry")', { model: dataToPost },
+                    function (data) {
+                        if (data.status == 1) {
+                            //show success message here.
+                            toastr.success(data.message, personType + ' ' + verificationType, { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            $('#' + formName).find('#AddressId').val(data.addressId);
+                            ShowLoader(false, "");
+                        } else {
+                            //show fail message here
+                            toastr.error(data.message, personType + ' ' + verificationType, { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            ShowLoader(false, "");
+                        }
+                    }).fail(function (jqXHR) {
+                        toastr.error("Something went wrong please try again later.", personType + ' ' + verificationType, { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                        ShowLoader(false, "");
+                    });
+        }
+
+    </script>
+}

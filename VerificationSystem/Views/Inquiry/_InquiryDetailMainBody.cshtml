@@ -1,0 +1,394 @@
+﻿@model VerificationSystem.DB.Inquiry
+@{
+    bool renderScript = (bool)ViewData["ScriptSection"];
+}
+@if (renderScript == false)
+{
+    <div class="row">
+        <div class="col-md-12">
+
+            @if (Model != null)
+            {
+                bool activeTab = false;
+                bool activeContent = false;
+                string activeLinkClass = "class=active";
+                string activeContentClass = "active";
+                                <!-- Custom Tabs -->
+                <div class="nav-tabs-custom">
+                    <!-- Persons Tabs Start here.-->
+                    <ul class="nav nav-tabs" style="font-weight:bold;">
+
+                        <!-- Applicant Tab link. -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Applicant
+    && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <li @activeLinkClass><a href="#TabApplicant" data-toggle="tab">Applicant</a></li>
+                            activeTab = true;
+                        }
+
+                        <!-- Spouse 1 Tab link. -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Spouse1
+&& (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <li @(activeTab ? "" : activeLinkClass)><a href="#TabSpouse1" data-toggle="tab">Spouse 1</a></li>
+                            activeTab = true;
+
+                        }
+
+                        <!-- Spouse 2 Tab link. -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.CoApplicant
+&& (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <li @(activeTab ? "" : activeLinkClass)><a href="#TabSpouse2" data-toggle="tab">Co Applicant</a></li>
+                            activeTab = true;
+
+
+                        }
+                        <!-- Guarantor 1 Tab link. -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Guarantor1
+&& (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+                            <li @(activeTab ? "" : activeLinkClass)><a href="#TabGuarantor1" data-toggle="tab">Guarantor 1</a></li>
+                            activeTab = true;
+                        }
+
+                        <!-- Guarantor 1 Tab link. -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Guarantor2
+&& (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <li @(activeTab ? "" : activeLinkClass)><a href="#TabGuarantor2" data-toggle="tab">Guarantor 2</a></li>
+                            activeTab = true;
+                        }
+                        <!-- Reference 1 Tab link. -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference1
+&& (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+                            <li @(activeTab ? "" : activeLinkClass)><a href="#TabRef1" data-toggle="tab">Reference # 1</a></li>
+                            activeTab = true;
+                        }
+                        <!-- Reference 2 Tab link. -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference2
+&& (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+                            <li @(activeTab ? "" : activeLinkClass)><a href="#TabRef2" data-toggle="tab">Reference # 2</a></li>
+                            activeTab = true;
+                        }
+                        <!-- Reference 3 Tab link. -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference3
+&& (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+                            <li @(activeTab ? "" : activeLinkClass)><a href="#TabRef3" data-toggle="tab">Reference # 3</a></li>
+                            activeTab = true;
+                        }
+
+
+                    </ul>
+                    <!-- Persons Tabs Link end here.-->
+                    <!-- Persons tab-content  Start here -->
+                    <div class="tab-content">
+
+
+                        <!-- applicants tab-content  Start here -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Applicant
+  && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+        || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+                            <div class="tab-pane @(activeContent ? "" : activeContentClass)" id="TabApplicant">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="tabs-verification-applicant" style="border-style:none;">
+
+                                            @Html.Partial("_InquiryVerificationsTypeTabs",
+                                        Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Applicant),
+                                        new ViewDataDictionary { { "ScriptSection", false } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            activeContent = true;
+                        }
+
+                        <!-- Spouse1  tab-content  Start here -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Spouse1
+    && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+        || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <div class="tab-pane  @(activeContent ? "" : activeContentClass)" id="TabSpouse1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="tabs-verification-spouse1" style="border-style:none;">
+
+                                            @Html.Partial("_InquiryVerificationsTypeTabs",
+                                            Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Spouse1),
+                                            new ViewDataDictionary { { "ScriptSection", false } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            activeContent = true;
+
+                        }
+                        <!-- Spouse2 tab-content  Start here -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.CoApplicant
+    && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+        || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <div class="tab-pane  @(activeContent ? "" : activeContentClass)" id="TabSpouse2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="tabs-verification-spouse2" style="border-style:none;">
+
+                                            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.CoApplicant),
+                new ViewDataDictionary { { "ScriptSection", false } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            activeContent = true;
+
+
+
+                        }
+
+                        <!-- Guarantor1 tab-content  Start here -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Guarantor1
+    && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+        || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <div class="tab-pane  @(activeContent ? "" : activeContentClass)" id="TabGuarantor1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="tabs-verification-guarantor1" style="border-style:none;">
+
+                                            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Guarantor1),
+                new ViewDataDictionary { { "ScriptSection", false } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            activeContent = true;
+
+
+
+                        }
+                        <!-- Guarantor2 tab-content  Start here -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Guarantor2
+        && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+            || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <div class="tab-pane  @(activeContent ? "" : activeContentClass)" id="TabGuarantor2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="tabs-verification-guarantor2" style="border-style:none;">
+
+                                            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Guarantor2),
+                new ViewDataDictionary { { "ScriptSection", false } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            activeContent = true;
+
+
+
+                        }
+                        <!-- Reference1 tab-content  Start here -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference1
+    && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+        || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <div class="tab-pane  @(activeContent ? "" : activeContentClass)" id="TabRef1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="tabs-verification-ref1" style="border-style:none;">
+
+                                            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Reference1),
+                new ViewDataDictionary { { "ScriptSection", false } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            activeContent = true;
+
+
+
+                        }
+                        <!-- Reference2 tab-content  Start here -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference2
+        && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+            || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <div class="tab-pane  @(activeContent ? "" : activeContentClass)" id="TabRef2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="tabs-verification-ref2" style="border-style:none;">
+
+                                            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Reference2),
+                new ViewDataDictionary { { "ScriptSection", false } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            activeContent = true;
+
+
+
+                        }
+                        <!-- Reference3 tab-content  Start here -->
+                        @if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference3
+    && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+        || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+                        {
+
+                            <div class="tab-pane  @(activeContent ? "" : activeContentClass)" id="TabRef3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="tabs-verification-ref3" style="border-style:none;">
+
+                                            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Reference3),
+                new ViewDataDictionary { { "ScriptSection", false } })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            activeContent = true;
+
+
+                        }
+
+                    </div>
+                    <!-- Persons tab-content  End here -->
+                </div>
+                                <!-- nav-tabs-custom -->
+
+            }
+
+        </div>
+        <!-- /.col -->
+        <!-- /.col -->
+    </div>
+}
+else
+{
+    if (Model != null)
+    {
+
+        if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Applicant
+          && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+                || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+        {
+
+            @Html.Partial("_InquiryVerificationsTypeTabs",
+                                        Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Applicant),
+                                        new ViewDataDictionary { { "ScriptSection", true } })
+
+
+        }
+
+        if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Spouse1
+            && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+                || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+        {
+
+
+            @Html.Partial("_InquiryVerificationsTypeTabs",
+                                            Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Spouse1),
+                                            new ViewDataDictionary { { "ScriptSection", true } })
+
+        }
+        if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.CoApplicant
+             && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+                 || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+        {
+
+
+
+            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.CoApplicant),
+            new ViewDataDictionary { { "ScriptSection", true } })
+        }
+
+
+        if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Guarantor1
+            && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+                || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+        {
+
+
+            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Guarantor1),
+                new ViewDataDictionary { { "ScriptSection", true } })
+
+
+        }
+        if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Guarantor2
+                && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+                    || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+        {
+
+            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Guarantor2),
+                new ViewDataDictionary { { "ScriptSection", true } })
+
+
+
+        }
+        if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference1
+            && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+                || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+        {
+
+            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Reference1),
+                new ViewDataDictionary { { "ScriptSection", true } })
+
+        }
+        if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference2
+               && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+                   || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+        {
+
+
+
+            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Reference2),
+                new ViewDataDictionary { { "ScriptSection", true } })
+
+        }
+        if (Model.PersonsVerifications.Any(x => x.PersonType == constant.PersonType.Reference3
+            && (x.ResidenceVerifications.Count > 0 || x.WorkOfficeVerifications.Count > 0 || x.SalarySlipVerifications.Count > 0
+                || x.BankStatementVerifications.Count > 0 || x.TenantVerifications.Count > 0)))
+        {
+
+
+            @Html.Partial("_InquiryVerificationsTypeTabs", Model.PersonsVerifications.FirstOrDefault(x => x.PersonType == constant.PersonType.Reference3),
+                new ViewDataDictionary { { "ScriptSection", true } })
+
+
+        }
+
+
+    }
+
+}

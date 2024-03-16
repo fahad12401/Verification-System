@@ -1,0 +1,413 @@
+﻿ @model VerificationSystem.Models.InquiryIndexVM
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3>
+                    <strong>All Inquiries</strong>
+                </h3>
+                
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body pad">
+
+                <h4 style="color:#3c8dbc; font-weight:bold;">Filters</h4>
+
+
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8">
+                        <div class="input-group">
+
+                            @Html.TextBox("InquiryIds", Model.InquiryIds, new { @class = "form-control filter", style = "min-width: 100%!important;", placeholder = " Filter by Id Comma Seperated", onkeydown = "if (event.keyCode == 13) $('#btnInquiryIds').click();", @type = "id" })
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary  btn-filter" type="button" id="btnInquiryIds" filter="InquiryIds"><strong>Go!</strong></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="input-group">
+
+                            @Html.TextBox("AppName", Model.AppName, new { @class = "form-control filter", style = "min-width: 100%!important;", placeholder = " Filter by Applicant Name", onkeydown = "if (event.keyCode == 13) $('#btnAppName').click();", @type = "an" })
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary  btn-filter" type="button" id="btnAppName" filter="AppName"><strong>Go!</strong></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="input-group">
+
+                            @Html.TextBox("AppCnic", Model.AppCnic, new { @class = "form-control filter", style = "min-width: 100%!important;", placeholder = " Filter by CNIC", onkeydown = "if (event.keyCode == 13) $('#btnAppCnic').click();", @type = "ac" })
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary  btn-filter" type="button" id="btnAppCnic" filter="AppCnic"><strong>Go!</strong></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+                <br />
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="input-group">
+
+                            @Html.ListBox("Branches", Model.BranchList, new { @class = "form-control filter ", style = "min-width: 100%!important;", data_placeholder = " Select Branches to Filter", onkeydown = "if (event.keyCode == 13) $('#btnBranches').click();", @type = "cb" })
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary  btn-filter" type="button" id="btnBranches" filter="Branches"><strong>Go!</strong></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    
+
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="input-group">
+
+                            @Html.ListBox("Products", Model.ProductList, new { @class = "form-control filter", style = "min-width: 100%!important;", data_placeholder = " Select Products to Filter", onkeydown = "if (event.keyCode == 13) $('#btnProducts').click();", @type = "p" })
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary  btn-filter" type="button" id="btnProducts" filter="Products"><strong>Go!</strong></button>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-12">
+    <div class="box box-primary">
+
+        <div class="box-body pad">
+
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Company</th>
+                                <th>Branch</th>
+                                <th>Company Branch</th>
+                                <th>Product</th>
+                                <th>App Name</th>
+                                <th>App Contact</th>
+                                <th>App CNIC</th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{int i = 0;}
+                            @foreach (var item in Model.Inquiries)
+                            {
+                                <tr id="@item.InquiryId">
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-show" id="btn-show_collapseOne_@i" value="collapseOne_@i"><i class="fa fa-plus-square"></i></button>
+                                        <button type="button" class="btn btn-primary btn-hide" id="btn-hide_collapseOne_@i" style="display:none;" value="collapseOne_@i"><i class="fa fa-minus-square"></i></button>
+                                    </td>
+                                    <td>@item.InquiryId</td>
+                                    <td>@item.CompanyName</td>
+                                    <td>@item.CustomerBranchName</td>
+                                    <td>@item.BranchName</td>
+                                    <td>@item.Product.Name</td>
+                                    <td>@item.AppName</td>
+                                    <td>@item.AppContact</td>
+                                    <td>@item.AppCNIC</td>
+                                    <td>@item.Status</td>
+                                    <td width="130px;">@GetReportDetailLinks(item.InquiryId.ToString(), item.Status)</td>
+                                </tr>
+                                    <tr>
+                                        <td colspan="11">
+                                            <div id="collapseOne_@i" class="panel-collapse collapse assignInquiry">
+                                                <br />
+                                                @Html.Partial("_InquiryVerification", new VerificationSystem.Models.InquiryVerificationVM() { Inquiry = item, FIOUsers = Model.FIOUsers }, new ViewDataDictionary { { "ScriptSection", false } })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                i++;
+                            }
+
+                        </tbody>
+                        <tfoot>
+
+                        </tfoot>
+                    </table>
+
+
+                    @Html.Partial("_CustomPager", Model.Pager)
+
+
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Styles {
+    @Styles.Render("~/Content/chosen")
+
+
+    <style type="text/css">
+        .gly-spin {
+            -webkit-animation: spin 2s infinite linear;
+            -moz-animation: spin 2s infinite linear;
+            -o-animation: spin 2s infinite linear;
+            animation: spin 2s infinite linear;
+        }
+
+        @@-moz-keyframes spin {
+            0% {
+                -moz-transform: rotate(0deg);
+            }
+
+            100% {
+                -moz-transform: rotate(359deg);
+            }
+        }
+
+        @@-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(359deg);
+            }
+        }
+
+        @@-o-keyframes spin {
+            0% {
+                -o-transform: rotate(0deg);
+            }
+
+            100% {
+                -o-transform: rotate(359deg);
+            }
+        }
+
+        @@keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(359deg);
+                transform: rotate(359deg);
+            }
+        }
+
+        .assignInquiry {
+            /*background:#03A9F4;*/
+            /*// background:#3a6386;*/
+            /*background-color: #868e96;
+            border-color: #868e96;*/
+        }
+    </style>
+
+
+}
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/chosen")
+
+    <script type="text/javascript">
+
+        function SetParamToQuery(url, type, value) {
+            var queryParams = new URLSearchParams(url)
+
+            if (value == "") {
+                if (queryParams.has(type)) {
+                    queryParams.delete(type);
+                    return queryParams.toString();
+                } else {
+                    return queryParams.toString();
+                }
+            } // end if (value == "")
+
+            queryParams.set(type, value);
+
+            return queryParams.toString();
+        }
+
+
+
+
+        $(function () {
+            $('#Statuses').chosen({ allow_single_deselect: true });
+            $('#Companies').chosen({ allow_single_deselect: true });
+            $('#Branches').chosen({ allow_single_deselect: true });
+            $('#Branches').chosen({ allow_single_deselect: true });
+            $('#Products').chosen({ allow_single_deselect: true });
+
+
+            $('.btn-filter').click(function () {
+
+                //var url =  '@HttpUtility.HtmlDecode( HttpUtility.UrlDecode(Request.QueryString.ToString()))';
+                var url = window.location.search;
+                var filters = $('.filter');
+
+                for (var i = 0; i < filters.length; i++) {
+
+                    var values = $(filters[i]).val();
+                    var type = $(filters[i]).attr('type');
+                    var val = "";
+
+                    if (type != "an" && type != "id" && type != "ac") {
+                        for (var j = 0; values.length > j; j++) {
+                            val += values[j] + ",";
+                        }
+                    } else {
+                        val = values;
+                    }
+
+                    url = SetParamToQuery(url, type, val);
+                }//end for
+
+                window.location = '@Request.Url.GetLeftPart(UriPartial.Path)?' + url;
+            });
+
+            $('.btnHoldReturn').click(function () {
+                ShowLoader(true, "Loading..");
+
+                $.get('@Url.Action("HoldReturn", "Inquiry")?id=' + this.value, {},
+                    function (data) {
+                        if (data.status > 0) {
+                            ShowLoader(false, "");
+
+                            bootbox.dialog({
+                                message: data.data, closeButton: true, size: 'normal'
+                            });
+                        }
+                        else {
+                            ShowLoader(false, "");
+
+                            toastr.error(data.message, "Hold/Return Inquiry", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                        }
+                    }
+
+                    );
+            });
+
+
+
+
+            $('.btn-show').click(function () {
+                $('#' + this.value).show();
+                $(this).hide();
+                $('#btn-hide_' + this.value).show();
+                $(this.parentElement.parentElement.nextElementSibling).find('.chosen-select').chosen({ allow_single_deselect: true });
+            });
+
+
+            $('.btn-hide').click(function () {
+                $('#' + this.value).hide();
+                $(this).hide();
+                $('#btn-show_' + this.value).show();
+            });
+
+        });
+
+
+
+
+    </script>
+
+    @Html.Partial("_InquiryVerification", new VerificationSystem.Models.InquiryVerificationVM() { Inquiry = null, FIOUsers = Model.FIOUsers }, new ViewDataDictionary { { "ScriptSection", true } })
+
+}
+
+
+@helper GetReportDetailLinks(string id, string status)
+        {
+
+
+    <div class="btn-group">
+
+
+        @if ((status == constant.Status.QualityCheck || status == constant.Status.PartialComplete))
+        {
+            <button class="btn btn-default" disabled style="color:black;"><span>Details</span></button>
+        }
+        else
+        {
+            @*@Html.ActionLink("Details", "InquiryDetail", new { id = id }, new { style = "color:black;"})*@
+            @*<a href="inquiry/InquiryDetail/@id" style="color:black;">
+                    Details
+                </a>*@
+            <a href="@Url.Action("InquiryDetail", "Inquiry", new { id = id })" class="btn btn-default" style="color:black;"><span>Details</span></a>
+        }
+
+
+
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+
+         
+
+            <li>
+                @if (status == constant.Status.QualityCheck)
+                {
+                    @Html.ActionLink("Quality Check", "QCDetail", "QC", new { id = id }, new { style = "color:black;" })
+                }
+            </li>
+
+        
+
+            <li>
+                @if (status == constant.Status.New)
+                {
+                    @Html.ActionLink("Edit", "Create", new { id = id }, new { style = "color:black;" })
+
+                }
+            </li>
+
+
+        </ul>
+    </div>
+
+
+}
+

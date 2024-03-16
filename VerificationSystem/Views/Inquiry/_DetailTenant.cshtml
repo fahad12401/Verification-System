@@ -1,0 +1,230 @@
+﻿@model VerificationSystem.DB.TenantVerification
+@using VerificationSystem.Extensions
+@using GridMvc.Html
+ @{
+     string isCustomerBuild = System.Configuration.ConfigurationManager.AppSettings["customerBuild"];
+     string imageServer = System.Configuration.ConfigurationManager.AppSettings["imageServer"];
+}
+
+
+    <div class="box-body">
+        <div id="@(Model.TenantVerificationId)tabs-tenant-main" style="border-style:none;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <ul>
+                        <li><a href="#@(Model.TenantVerificationId)TabTenantDetail" style="border-bottom-style:inset;">Detail</a></li>
+                        <li><a href="#@(Model.TenantVerificationId)TabTenantStatus" style="border-bottom-style:inset;">Status History</a></li>
+                    </ul>
+                    <div id="@(Model.TenantVerificationId)TabTenantDetail">
+                        <div class="row">
+                         
+                                <div id="@(Model.TenantVerificationId)tabs-tenant-detail" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-6">
+                                        @*@PersonTypeIdForTenantTab*@
+                                        @* Tenant verification Section start*@
+                                        <div class="row">
+
+                                            <div>
+                                                <h4 class="text-left col-lg-12 col-md-12"><u><strong>Tenant Verification</strong></u></h4>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <dl class="dl-horizontal">
+                                                    <dt>
+                                                        Person Name
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.PersonName
+                                                    </dd>
+                                                    <dt>
+                                                        Person Contact No
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.PersonContactNo
+                                                    </dd>
+                                                    <dt>
+                                                        Tenant Address
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.TenantAddress
+                                                    </dd>
+                                                    <dt>
+                                                        Nearest LandMark
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.NearestLandMark
+                                                    </dd>
+
+                                                    @if (Model.Status == constant.Status.Completed || Model.Status == constant.Status.QualityCheck)
+                                                {
+                                                <dt>
+                                                    Tenant Name
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.TenantName
+                                                </dd>
+                                                <dt>
+                                                    Tenant Contact No
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.TenantContactNo
+                                                </dd>
+                                                <dt>
+                                                    Tenant Address
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.TenantAddress
+                                                </dd>
+                                                <dt>
+                                                    Tenant CNIC
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.TenantCNIC
+                                                </dd>
+                                                <dt>
+                                                    Tenancy Period
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.TenancyPeriod
+                                                </dd>
+                                                <dt>
+                                                    Tenant Rent
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.TenantRent
+                                                </dd>
+
+
+
+
+                                                <dt>
+                                                    Gps Location
+
+                                                </dt>
+                                                <dd>
+                                                    @Model.GpsLocation
+                                                </dd>
+
+
+                                                <dt>
+
+                                                    GPS URL
+                                                </dt>
+                                                <dd>
+                                                    <a href="@Model.GpsURL" class="btn btn-primary" title="Physical Location" style="color:white" target="_blank"><i style="margin-right: 0.7em; color: white;" class="glyphicon glyphicon-map-marker"></i>Show on Map</a>
+                                                </dd>
+
+                                                <dt>
+                                                    General Comments
+                                                </dt>
+                                                <dd>
+                                                    @Model.GeneralComments
+                                                </dd>
+
+                                                <dt>
+                                                    Outcome Of Verification
+                                                </dt>
+                                                <dd>
+                                                    @Model.OutComeVerification
+                                                </dd>
+
+
+                                                <dt>
+                                                    Verified By
+                                                </dt>
+                                                <dd>
+                                                    @Model.VerifiedBy
+                                                </dd>
+                                                }
+                                                </dl>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    </div>
+                                    @* Tenant verification section end *@
+
+
+
+                                    <div class="col-md-6">
+                                        @if (Model.Status == constant.Status.Completed || Model.Status == constant.Status.QualityCheck)
+                                        {
+                                            if (Model.Images.Count > 0)
+                                            {
+
+                                                <div>
+                                                    <h4 class="text-left col-lg-12 col-md-12"><u><strong>Verification Images</strong></u></h4>
+                                                </div>
+                                                foreach (var item in Model.Images)
+                                                {
+                                                    if (!string.IsNullOrEmpty(imageServer))
+                                                    {
+                                                        <div class="col-xs-6 col-sm-5 col-lg- col-md-5">
+                                                          <!--  <img id="img1" class="thumbnail img-responsive myimage" title="@item.PersonType" onclick="ImageOnClick(this);" src="@Html.GetImageInBase64Server(item.ImagePath)" alt="Image" /> -->
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-xs-6 col-sm-5 col-lg- col-md-5">
+                                                         <!--    <img id="img1" class="thumbnail img-responsive myimage" title="@item.PersonType" onclick="ImageOnClick(this);" src="@Html.GetImageInBase64(item.ImagePath)" alt="Image" /> -->
+                                                        </div>
+                                                    }
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                    <h3 class="text-center HeadingStyle col-lg-12 col-md-12 " style="color:orangered">No Verification Images Found</h3>
+                                        }
+                                    }
+                                    </div>
+                                </div> @* Tab Main row *@
+                            
+                        </div>
+                    </div>
+                    <div id="@(Model.TenantVerificationId)TabTenantStatus">
+                        <div class="row">
+                            <div id="@(Model.TenantVerificationId)tabs-tenant-status" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow:auto">
+                                        @*<div class="well well-sm" style="background-color:#337ab7; color:white; overflow:hidden;">
+                                            <h3 class="text-left col-lg-12 col-md-12">Status History</h3>
+                                        </div>*@
+
+                                        @Html.Grid(Model.Statuses).Named("Statuses").Columns(c =>
+                       {
+                           c.Add(x => x.ApplicationUsers.UserName).Titled("Username");
+                           //c.Add(x => x.PersonType).Titled("PersonType");
+                           //c.Add(x => x.VerificationType).Titled("VerificationType");
+
+                           c.Add(x => x.StatusMessage).Titled("StatusMessage");
+                           c.Add(x => x.Descriptions).Titled("Descriptions");
+
+                           c.Add(x => x.StatusDate).Titled("Status Date").Format("{0:dd-MM-yyyy hh:mm tt}");
+
+
+                       })
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+

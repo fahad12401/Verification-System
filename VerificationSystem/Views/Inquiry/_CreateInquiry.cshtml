@@ -1,0 +1,250 @@
+﻿@model VerificationSystem.Models.InquiryCreateVM
+@{
+    bool renderScript = (bool)ViewData["ScriptSection"];
+
+}
+
+
+@if (renderScript == false)
+{
+    using (Html.BeginForm("Create", "Inquiry", FormMethod.Post, new { name = "InquiryForm", id = "InquiryForm" }))
+    {
+
+        @Html.AntiForgeryToken();
+
+        @*<div class="row">
+                @Html.ValidationSummary(false, "", new { @class = "text=danger" })
+            </div>*@
+        @Html.HiddenFor(x => x.InquiryId)
+        <div class="row">
+            @* Inquiry master form *@
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3><strong> Create Inquiry</strong></h3>
+
+                    </div>
+                    <div class="box-body">
+                        <div class="row " id="row1">
+                            <div class="col-md-3">
+                                <div class="form-group ">
+
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.BranchId, new { @class = " control-label" })
+                                        @Html.DropDownListFor(x => x.BranchId, Model.BranchList, "", new { @class = " form-control chosen-branch  ", data_placeholder = "Select a  Branch" })
+
+                                        @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group ">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.CompanyId, new { @class = " control-label" })
+
+                                        @Html.DropDownListFor(x => x.CompanyId, Model.CompanyList, "", new { @class = "form-control chosen-company  ", data_placeholder = "Select a Company" })
+
+                                        @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group ">
+                                    <div class="col-md-12">
+
+                                        @Html.LabelFor(m => m.CustomerBranchId, new { @class = "control-label" })
+
+                                        @Html.DropDownListFor(x => x.CustomerBranchId, Model.CustomerBranchList, "", new { @class = "form-control chosen-customerbranch  ", data_placeholder = "Select a Customer Branch" })
+
+                                        @Html.ValidationMessageFor(m => m.CustomerBranchId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group ">
+                                    <div class="col-md-12">
+
+                                        @Html.LabelFor(m => m.ProductId, new { @class = "control-label" })
+
+                                        @Html.DropDownListFor(x => x.ProductId, Model.ProductList, "", new { @class = "form-control chosen-product  ", data_placeholder = "Select a Product" })
+
+                                        @Html.ValidationMessageFor(m => m.ProductId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="row2">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.AppName, new { @class = " control-label" })
+
+
+                                        @Html.TextBoxFor(m => m.AppName, new { @class = "form-control" })
+
+
+                                        @Html.ValidationMessageFor(m => m.AppName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.AppCNIC, new { @class = " control-label" })
+                                        @Html.TextBoxFor(m => m.AppCNIC, new { @class = "form-control" })
+
+
+                                        @Html.ValidationMessageFor(m => m.AppCNIC, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.AppContact, new { @class = " control-label" })
+                                        @Html.TextBoxFor(m => m.AppContact, new { @class = "form-control" })
+
+
+                                        @Html.ValidationMessageFor(m => m.AppContact, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <br />
+
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+
+                                        <input type="button" class="btn btn-primary btn-block" value="Create New Inquiry" id="CreateInquiry">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+}
+else
+{
+
+    <script type="text/javascript">
+
+        //Checking if inquiry id already exists then hide useless divs, and show verifications tabs
+        //and assigning values of useful fields that are used to display in front
+        @if (@Model.InquiryId > 0)
+        {
+
+            @:disableAndHide();
+            //Enable Verification Div and display...
+            @:$('#div-verification-tabs').removeClass("hidden");
+
+            //Show data of different verifications
+            @:$('#salarySlipTable').removeClass('hidden');
+            @:$('#tenantTable').removeClass('hidden');
+            @:$('#residenceTable').removeClass('hidden');
+            @:$('#workOfficeTable').removeClass('hidden');
+            @:$('#bankStatementTable').removeClass('hidden');
+
+        }
+
+
+        $("#CompanyId").change(function () {
+
+            ShowLoader(true, "Please wait");
+            $.get('@Url.Action("GetBranchesByCompany", "CustomerBranch")', { companyId: this.value },
+            function (data) {
+                if (data.status) {
+                    fillBranches(data.branches);
+                }
+                else {
+                    this.value = '';
+                    $('#CustomerBranchId')
+                    .empty();
+                }
+            });
+
+            $.get('@Url.Action("GetProductsByCompany","Product")', { companyId: this.value },
+                function (data) {
+                    if (data.status) {
+                        fillProducts(data.products);
+                    } else {
+                        this.value = '';
+                        $('#ProductId').empty();
+                    }
+                });
+
+            ShowLoader(false, "")
+        });
+
+        function fillBranches(list) {
+            $('#CustomerBranchId')
+            .empty();
+            var options = '';
+            for (var i = 0; i < list.length; i++) {
+                options += '<option value="' + list[i].CustomerBranchId + '">' + list[i].Name + '</option>   ';
+            }
+            $('#CustomerBranchId').append(options);
+        }
+
+        function fillProducts(list) {
+            $('#ProductId')
+            .empty();
+            var options = '';
+            for (var i = 0; i < list.length; i++) {
+                options += '<option value="' + list[i].ProductId + '">' + list[i].Name + '</option>   ';
+            }
+            $('#ProductId').append(options);
+        }
+
+        $('#CreateInquiry').click(function () {
+            if ($('#InquiryForm').valid()) {
+                ShowLoader(true, "Loading...");
+                var dataToPost = $('#InquiryForm').serializeObject();
+
+                $.post('@Url.Action("Create", "Inquiry")', { model: dataToPost },
+                    function (data) {
+                        if (data.status == 1) {
+                            //show message here for alert
+                            toastr.success(data.message + "</br> Now add Verification detail in verification type.", "Inquiry Created", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+
+                            $('#InquiryId').val(data.inquiryId);
+                            disableAndHide();
+                            //Enable Verification Div and display...
+                            $('#div-verification-tabs').removeClass("hidden");
+                            ShowLoader(false, "");
+                        }
+                        else {
+                            toastr.error(data.message, "Inquiry Creation", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            ShowLoader(false, "");
+                        }
+                    }).fail(function (jqXHR, textStatus,errorThrown) {
+                        toastr.error("Network error try again", "Inquiry Creation"+ jqXHR.status, { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                        
+                    });
+            } else {
+
+            }
+        });
+
+        function disableAndHide() {
+
+            $('#row1').addClass("hidden");
+            $('#row2').find('.form-control').attr('disabled', 'disabled');
+            $('#CreateInquiry').attr('disabled', 'disabled');
+
+        }
+
+
+    </script>
+
+}

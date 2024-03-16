@@ -1,0 +1,270 @@
+﻿@model VerificationSystem.Models.InquiryCreateVM
+@{
+    ViewBag.Title = "Create-Inquiry";
+}
+
+@Html.Partial("_CreateInquiry", Model, new ViewDataDictionary { { "ScriptSection", false } })
+
+
+<div class="row hidden" id="div-verification-tabs">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3><strong>Verification Types</strong></h3>
+            </div>
+            <!-- /.box-header -->
+
+
+            <div class="box-body" style="border-style:groove;">
+
+                <!-- START CUSTOM TABS -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Custom Tabs -->
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs" style="font-weight:bold;">
+                                <li class="active"><a href="#tab_1" data-toggle="tab">Residence</a></li>
+                                <li><a href="#tab_2" data-toggle="tab">Work Office</a></li>
+                                <li><a href="#tab_3" data-toggle="tab">Salary Slip</a></li>
+                                <li><a href="#tab_4" data-toggle="tab">Bank Statement</a></li>
+                                <li><a href="#tab_5" data-toggle="tab">Tenant</a></li>
+
+
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab_1">
+
+
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box box-primary">
+                                                <div class="box-header with-border">
+                                                    <h4>Residence Verifications</h4>
+
+                                                </div>
+                                                <div class="box-body">
+                                                    @Html.Partial("_CreateResidence", Model.ResidenceCreateVM, new ViewDataDictionary { { "ScriptSection", false } })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                                <!-- /.tab-pane -->
+                                <div class="tab-pane" id="tab_2">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box box-primary">
+                                                <div class="box-header with-border">
+                                                    <h4>Work Office Verifications</h4>
+
+                                                </div>
+                                                <div class="box-body">
+                                                    @Html.Partial("_CreateWorkOffice", Model.WorkOfficeVM, new ViewDataDictionary { { "ScriptSection", false } })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <!-- /.tab-pane -->
+                                <div class="tab-pane" id="tab_3">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box box-primary">
+                                                <div class="box-header with-border">
+                                                    <h4>Salary Slip Verifications</h4>
+
+                                                </div>
+                                                <div class="box-body">
+                                                    @Html.Partial("_CreateSalarySlip", Model.SalarySlipVM, new ViewDataDictionary { { "ScriptSection", false } })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="tab-pane" id="tab_4">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box box-primary">
+                                                <div class="box-header with-border">
+                                                    <h4>Bank Statement Verifications</h4>
+
+                                                </div>
+                                                <div class="box-body">
+                                                    @Html.Partial("_CreateBankStatement", Model.BankStatementCreateVM, new ViewDataDictionary { { "ScriptSection", false } })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="tab-pane" id="tab_5">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="box box-primary">
+                                                <div class="box-header with-border">
+                                                    <h4>Tenant Verifications</h4>
+
+                                                </div>
+                                                <div class="box-body">
+                                                    @Html.Partial("_CreateTenant", Model.TenantCreateVM, new ViewDataDictionary { { "ScriptSection", false } })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+                                <!-- /.tab-pane -->
+                            </div>
+                            <!-- /.tab-content -->
+                        </div>
+                        <!-- nav-tabs-custom -->
+                    </div>
+                    <!-- /.col -->
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <!-- END CUSTOM TABS -->
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<br />
+<div class="col-md-12" align="left">
+
+    @Html.ActionLink("Back to List", "Index")
+
+</div>
+
+@section Styles{
+    @Styles.Render("~/Content/loader.css")
+    <style type="text/css">
+        /*input[type="checkbox"] {width:20px;height:20px;}*/
+        .form-horizontal .control-label {
+            text-align: left;
+        }
+
+        .HeadingStyle {
+            color: #333333;
+            font-family: Gill Sans / Gill Sans MT, sans-serif;
+            font-weight: bold;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+
+        /* Style the tab */
+        div.tab {
+            float: left;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            width: 100%;
+        }
+
+            /* Style the buttons inside the tab */
+            div.tab button {
+                display: block;
+                background-color: inherit;
+                color: black;
+                padding: 22px 16px;
+                width: 100%;
+                border: none;
+                outline: none;
+                text-align: left;
+                cursor: pointer;
+                transition: 0.3s;
+                font-size: 17px;
+            }
+
+                /* Change background color of buttons on hover */
+                div.tab button:hover {
+                    background-color: #ddd;
+                }
+
+                /* Create an active/current "tab button" class */
+                div.tab button.active {
+                    background-color: #ccc;
+                }
+
+        /* Style the tab content */
+        .tabcontent {
+            float: left;
+            padding: 0px 12px;
+            border: 1px solid #ccc;
+            width: 100%;
+            /*border-left: none;*/
+        }
+    </style>
+
+}
+
+@section Scripts{
+
+    @Html.Partial("_CreateInquiry", Model, new ViewDataDictionary { { "ScriptSection", true } })
+    @Html.Partial("_CreateResidence", Model.ResidenceCreateVM, new ViewDataDictionary { { "ScriptSection", true } })
+
+    @Html.Partial("_CreateWorkOffice", Model.WorkOfficeVM, new ViewDataDictionary { { "ScriptSection", true } })
+    @Html.Partial("_CreateSalarySlip", Model.SalarySlipVM, new ViewDataDictionary { { "ScriptSection", true } })
+    @Html.Partial("_CreateBankStatement", Model.BankStatementCreateVM, new ViewDataDictionary { { "ScriptSection", true } })
+    @Html.Partial("_CreateTenant", Model.TenantCreateVM, new ViewDataDictionary { { "ScriptSection", true } })
+
+
+
+
+    <script>
+
+        $('.tablinks').click(function () {
+
+            $('.tablinks').removeClass('active');
+            $(this).addClass('active');
+
+            var div = $(this).val();
+            $('.tabcontent').addClass('hidden');
+            $('#' + div).removeClass('hidden');
+        });
+
+        function ShowLoader(condition, message) {
+
+            if (condition) {
+                bootbox.dialog({
+                    message: '<div class="text-center"><i class="fa fa-spin fa-spinner fa-2x"></i>  <br/> <span >' + message + '  </span></div>', closeButton: false
+                });
+            } else {
+                bootbox.hideAll();
+            }
+        }
+
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootbox")
+}
+

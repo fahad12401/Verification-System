@@ -1,0 +1,449 @@
+﻿@model VerificationSystem.Models.HomeIndexViewModel
+@using GridMvc.Html;
+@{
+    ViewBag.Title = "Home Page";
+
+
+    double totalOpenPercent = ((Model.Open / Model.Total) * 100).ToString() == "NaN" ? 0 : ((Model.Open / Model.Total) * 100);
+
+    double totalInprogressPrecent = ((Model.InProgress / Model.Total) * 100).ToString() == "NaN" ? 0 : ((Model.InProgress / Model.Total) * 100);
+
+    double totalPartialPercent = ((Model.Partial / Model.Total) * 100).ToString() == "NaN" ? 0 :
+      ((Model.Partial / Model.Total) * 100);
+
+    double totalQualityCheckPercent = ((Model.QualityCheck / Model.Total) * 100).ToString() == "NaN" ? 0 :
+     ((Model.QualityCheck / Model.Total) * 100);
+
+    double totalCompletedPercent = ((Model.Completed / Model.Total) * 100).ToString() == "NaN" ? 0 : ((Model.Completed / Model.Total) * 100);
+
+
+  
+
+    
+
+
+    double totalOpenPercentCurrent = ((Model.OpenCurrent / Model.Total) * 100).ToString() == "NaN" ? 0 : ((Model.OpenCurrent / Model.Total) * 100);
+    double totalInprogressPercentCurrent = ((Model.InProgressCurrent / Model.Total) * 100).ToString() == "NaN" ? 0 : ((Model.InProgressCurrent / Model.Total) * 100);
+    double totalCompletedPercentCurrent = ((Model.CompletedCurrent / Model.Total) * 100).ToString() == "Nan" ? 0 : ((Model.CompletedCurrent / Model.Total) * 100);
+
+
+
+
+
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3><strong>Overall Inquiries</strong></h3>
+
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="@Url.Action("Index" , "Inquiry")?st=@constant.Status.New">
+                            <div class="info-box bg-orange">
+                                <span class="info-box-icon"><i class="fa fa-arrow-right"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text"><strong>Open</strong></span>
+                                    <span class="info-box-number">@Model.Open</span>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: @(totalOpenPercent.ToString("0"))%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        <strong>@totalOpenPercent.ToString("00.00") %</strong>
+                                    </span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="@Url.Action("Index" , "Inquiry")?st=@constant.Status.InProgress">
+                            <div class="info-box bg-aqua">
+                                <span class="info-box-icon"><i class="fa fa-spinner"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text"><strong>In Progress</strong></span>
+                                    <span class="info-box-number">@Model.InProgress</span>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: @(totalInprogressPrecent.ToString("0"))%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        <strong>@totalInprogressPrecent.ToString("00.00") %</strong>
+                                    </span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </a>
+                    </div>
+                    @*<div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="@Url.Action("Index" , "Inquiry")?st=@constant.Status.Hold">
+                            <div class="info-box bg-gray-active">
+                                <span class="info-box-icon"><i class="fa fa-hourglass-half"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text"><strong>Hold</strong></span>
+                                    <span class="info-box-number">@Model.Hold</span>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: @(totalHoldPercent.ToString("0"))%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        <strong>@totalHoldPercent.ToString("00.00") %</strong>
+                                    </span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </a>
+                    </div>*@
+
+                    @*<div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="@Url.Action("Index" , "Inquiry")?st=@constant.Status.Return">
+                            <div class="info-box bg-red">
+                                <span class="info-box-icon"><i class="fa fa-close"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text"><strong>Return</strong></span>
+                                    <span class="info-box-number">@Model.Return</span>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: @(totalReturnPercent.ToString("0"))%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        <strong>@totalReturnPercent.ToString("00.00") %</strong>
+                                    </span>
+                                </div>
+                                
+                            </div>
+                            
+                        </a>
+                    </div>*@
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="@Url.Action("Index" , "Inquiry")?st=@constant.Status.PartialComplete">
+                            <div class="info-box bg-green">
+                                <span class="info-box-icon"><i class="fa fa-check-circle"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text"><strong>Partial Completed</strong></span>
+                                    <span class="info-box-number">@Model.Partial</span>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: @(totalPartialPercent.ToString("0"))%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        <strong>@totalPartialPercent.ToString("00.00") %</strong>
+                                    </span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                        </a>
+                        <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="@Url.Action("Index" , "Inquiry")?st=@constant.Status.QualityCheck">
+                            <div class="info-box bg-aqua">
+                                <span class="info-box-icon"><i class="fa fa-shield"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text"><strong>Quality Check</strong></span>
+                                    <span class="info-box-number">@Model.QualityCheck</span>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: @(totalQualityCheckPercent.ToString("0"))%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        <strong>@totalQualityCheckPercent.ToString("00.00") %</strong>
+                                    </span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                        </a>
+                        <!-- /.info-box -->
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <a href="@Url.Action("Index" , "Inquiry")?st=@constant.Status.Completed">
+                            <div class="info-box bg-green">
+                                <span class="info-box-icon"><i class="fa fa-check"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text"><strong>Completed</strong></span>
+                                    <span class="info-box-number">@Model.Completed</span>
+
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: @(totalCompletedPercent.ToString("0"))%"></div>
+                                    </div>
+                                    <span class="progress-description">
+                                        <strong>@totalCompletedPercent.ToString("00.00") %</strong>
+                                    </span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </a>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="container-fluid">
+        <h2 align="center" style="color: #333333; font-family: ‘Arial Black’, Gadget, sans-serif; font-weight: bold;">View Results</h2>
+    </div>*@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3>
+                    <strong> Current Month's Inprogress Inquiries</strong>
+                </h3>
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip"
+                            title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+
+                </div>
+                <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body pad">
+
+
+
+                <div>
+                    @if (Model.InquiriesInProgress != null)
+            {
+                        @Html.Grid(Model.InquiriesInProgress).Named("InprogressGrid").Columns(c =>
+           {
+               c.Add(x => x.InquiryId).Titled("ID");
+               c.Add(x => x.CompanyName).Titled("Company");
+               c.Add(x => x.CustomerBranchName).Titled("Branch");
+               c.Add(x => x.BranchName).Titled("Branch");
+               c.Add(x => x.Product.Name).Titled("Product");
+               c.Add(x => x.AppName).Titled("App Name");
+               c.Add(x => x.AppContact).Titled("App Contact");
+               c.Add(x => x.AppCNIC).Titled("App CNIC");
+               c.Add(x => x.Status).Titled("Status");
+
+
+               c.Add().SetWidth(130).Titled("Action").Sanitized(false).Encoded(false).RenderValueAs(x => GetReportDetailLinksThis(x.InquiryId.ToString(), x.Status)).SetWidth(190);
+
+           }).WithPaging(10);
+            }
+
+                </div>
+
+
+            </div>
+        </div>
+        <!-- /.box -->
+
+        <br /><br />
+
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3>
+                    <strong>Current Month's Completed Inquiries</strong>
+                </h3>
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-default btn-sm" data-widget="collapse" data-toggle="tooltip"
+                            title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+
+                </div>
+                <!-- /. tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body pad">
+
+
+
+                <div>
+                    @if (Model.InquiriesCompleted != null)
+            {
+                        @Html.Grid(Model.InquiriesCompleted).Named("InquiriesCompleted").Columns(c =>
+               {
+                   c.Add(x => x.InquiryId).Titled("ID").SetWidth(50);
+                   c.Add(x => x.CompanyName).Titled("Company");
+                   c.Add(x => x.CustomerBranchName).Titled("Branch");
+                   c.Add(x => x.BranchName).Titled("Branch");
+                   c.Add(x => x.Product.Name).Titled("Product");
+                   c.Add(x => x.AppName).Titled("App Name");
+                   c.Add(x => x.AppContact).Titled("App Contact");
+                   c.Add(x => x.AppCNIC).Titled("App CNIC");
+                   c.Add(x => x.Status).Titled("Status");
+
+
+                   c.Add().SetWidth(130).Titled("Action").Sanitized(false).Encoded(false).RenderValueAs(x => GetReportDetailLinksThis(x.InquiryId.ToString(), x.Status)).SetWidth(190);
+
+               }).WithPaging(10);
+            }
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <!-- /.col-->
+</div>
+<!-- ./row -->
+
+
+
+<br />
+<br />
+<br />
+<br />
+
+
+
+
+
+
+@section Styles
+    {
+    <link href="~/Content/circle.css" rel="stylesheet" />
+    @Styles.Render("~/Content/Gridmvc")
+}
+@section Scripts{
+    @Scripts.Render("~/bundles/Gridmvc")
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            $('.btnHoldReturn').click(function () {
+                ShowLoader(true, "Loading..");
+
+                $.get('@Url.Action("HoldReturn", "Inquiry")?id=' + this.value, {},
+                    function (data) {
+                        if (data.status > 0) {
+                            ShowLoader(false, "");
+
+                            bootbox.dialog({
+                                message: data.data, closeButton: true, size: 'normal'
+                            });
+                        }
+                        else {
+                            ShowLoader(false, "");
+
+                            toastr.error(data.message, "Hold/Return Inquiry", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                        }
+                    }
+
+                    );
+            });
+
+        });
+       
+    </script>
+
+}
+
+@helper GetReportDetailLinksThis(string id, string status)
+{
+
+    <div class="btn-group">
+       
+            @if ((User.IsInRole(constant.Roles.Head)) && status == constant.Status.QualityCheck || status == constant.Status.PartialComplete)
+            {
+                <button class="btn btn-default" disabled style="color:black;"><span>Details</span></button>
+            }
+            else
+            {
+                <a href="@Url.Action("InquiryDetail", "Inquiry", new { id = id })" class="btn btn-default" style="color:black;"><span>Details</span></a>
+                @*@Html.ActionLink("Details", "InquiryDetail", "Inquiry", new { id = id }, new { style = "color:black;" })*@
+
+            }
+     
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                @if (status == constant.Status.Completed)
+                {
+
+                    @*<button type="button" class="btn-link ui-icon-link " value="@id" onclick="window.open('@Url.Action("Report", "Report", new { id = id })', 'myPopup', height='600px',align='center', width='700px',left='50px', top='10px', menubar='no', status='no', toolbar='no', scrollbars='yes', resizable='yes'  ) ;" title="Show in Report Format">
+                            Report
+                        </button>*@
+                    @Html.ActionLink("Report", "Report", "Report", new { id = id }, new { target = "_black", style = "color:black;" })
+
+                }
+                else
+                {
+
+                    <p style="margin-left:18px; margin-top:6px; cursor:not-allowed; color:black;">Report</p>
+
+                }
+            </li>
+           
+
+        >
+
+
+
+
+        </ul>
+    </div>
+
+
+
+
+    @*if (status == constant.Status.Completed)
+        {
+                <button type="button" class="btn-link ui-icon-link " value="@id" onclick="window.open('@Url.Action("Report", "Report", new { id = id })', 'myPopup', height='600px',align='center', width='700px',left='50px', top='10px', menubar='no', status='no', toolbar='no', scrollbars='yes', resizable='yes'  ) ;" title="Show in Report Format">
+                    Report
+                </button>
+
+                <span>|</span>
+
+        }
+        else
+        {
+                <button type="button" disabled class="btn-link ui-icon-link" style="color:red" value="@id" onclick="return false;" title="Show in Report Format">
+                    Report
+                </button>
+        }
+        if ((User.IsInRole(constant.Roles.CBranch) || User.IsInRole(constant.Roles.CHead)) && status == constant.Status.QualityCheck || status == constant.Status.PartialComplete)
+        {
+                <a href="#" style="cursor:not-allowed;"> Details </a>
+        }
+        else
+        {
+                @Html.ActionLink("Details", "InquiryDetail", new { id = id })
+
+        }*@
+
+
+
+
+
+}
+
+

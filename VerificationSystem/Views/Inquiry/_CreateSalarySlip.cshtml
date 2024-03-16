@@ -1,0 +1,535 @@
+﻿@model VerificationSystem.Models.SalarySlipVM
+@{
+    bool renderScript = (bool)ViewData["ScriptSection"];
+
+}
+
+@if (renderScript == false)
+{
+    <div>
+        <table class="hidden text-left table table-striped" id="salarySlipTable">
+            <thead>
+                <tr>
+                    <th>
+                        Person Type
+                    </th>
+                    <th>
+                        Person Name
+                    </th>
+                    <th>
+                        Person Contact #
+                    </th>
+
+                    <th>
+                        Office Name
+                    </th>
+                    <th>
+                        Office Address
+                    </th>
+                    <th>
+                        Nearest Landmark
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SalarySlipVerification)
+                {
+                    <tr id="@item.SalarySlipVerificationId">
+                        <td class="hidden">
+                            <label id="SalarySlipVerificationId">@item.SalarySlipVerificationId</label>
+                            <label id="OldPersonType">@item.PersonType</label>
+
+                        </td>
+                        <td id="PersonType">@item.PersonType</td>
+                        <td id="PersonName">@item.PersonName</td>
+                        <td id="PersonContactNo">@item.PersonContactNo</td>
+
+                        <td id="OfficeName">@item.OfficeName</td>
+                        <td id="OfficeAddress">@item.OfficeAddress</td>
+                        <td id="NearestLandMark">@item.NearestLandMark</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" value="@item.SalarySlipVerificationId" id="SalarySlipEdit" onclick="SSEdit(this);"><span class="glyphicon glyphicon-edit">&nbsp</span> Edit </button>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h4>Create / Update Salary Slip Verifications</h4>
+
+                </div>
+                <div class="box-body">
+                    @using (Html.BeginForm("CreateSalarySlip", "Inquiry", FormMethod.Post, new { @name = "SalarySlipForm", id = "SalarySlipForm", enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.HiddenFor(x => x.SalarySlipVerificationId)
+                                @Html.HiddenFor(x => x.OldPersonType)
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonType, new { @class = " control-label" })
+
+                                            @Html.DropDownListFor(x => x.PersonType, Model.PersonTypeList, "", new { @class = " form-control chosen-branch  ", data_placeholder = "Select a Person " })
+
+                                            @Html.ValidationMessageFor(m => m.PersonType, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonName, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.PersonName, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.PersonName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.OfficeName, new { @class = " control-label" })
+
+
+                                            @Html.TextBoxFor(m => m.OfficeName, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.OfficeName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonContactNo, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.PersonContactNo, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.PersonContactNo, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.OfficeAddress, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.OfficeAddress, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.OfficeAddress, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.NearestLandMark, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.NearestLandMark, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.NearestLandMark, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @* Payslip section *@
+                        @*<div class="row">
+                            <div class="col-md-12">
+                                <br />
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            <label class="control-label" for="paySlipS">Select Pay Slip </label>
+                                            <input type="file" id="PaySlip" name="PaySlip" accept="image/jpeg,image/jpg,image/png" class="btn btn-default">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>*@
+
+
+
+                        <br />
+                                @*<div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <div id="imgPreview" class="thumbnail" style="display:none;">
+                                                        <img class="img-responsive" id="targetImg" />
+                                                        <div class="caption">
+                                                            <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                                                            <span id="description"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4">
+                                            <br />
+
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+
+                                                    <input type="button" class="btn btn-primary btn-block pull-right" value="Save" id="CreateSalarySlip">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <br />
+
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+
+                                                    <input type="button" class="btn btn-warning btn-block pull-left" value="Reset" id="SalarySlipReset" onclick="SSReset();">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+else
+{
+
+
+    <script type="text/javascript">
+
+        //====================================//
+
+        $("#SalarySlipForm #PersonType").change(function () {
+
+            var residenceTableRowsLength = $('#residenceTable tr').length;
+            var bankStatementRowsTable = $('#bankStatementTable tr').length;
+            var salarySlipRowsTable = $('#salarySlipTable tr').length;
+            var tenantRowsTable = $('#tenantTable tr').length;
+            var workOfficeRowsTable = $('#workOfficeTable tr').length;
+
+            var personType = $("#SalarySlipForm #PersonType option:selected").val();
+            if (personType == '@constant.PersonType.Applicant') {
+                var AppName = $('#InquiryForm #AppName').val();
+                var AppContact = $('#InquiryForm #AppContact').val();
+
+
+                $('#SalarySlipForm #PersonName').val(AppName);
+                $('#SalarySlipForm #PersonContactNo').val(AppContact);
+
+            }
+            else {
+
+                var result = false;
+                if (residenceTableRowsLength > 1 && result == false) {
+
+                    result = fillExistingDataSS("residenceTable", personType);
+                    if (result == false) {
+                        $('#SalarySlipForm #PersonName').val('');
+                        $('#SalarySlipForm #PersonContactNo').val('');
+                    }
+                    // alert(result);
+
+                }
+                if (workOfficeRowsTable > 1 && result == false) {
+
+                    result = fillExistingDataSS("workOfficeTable", personType);
+                    if (result == false) {
+                        $('#SalarySlipForm #PersonName').val('');
+                        $('#SalarySlipForm #PersonContactNo').val('');
+                    }
+                    //alert(result);
+
+                }
+                if (salarySlipRowsTable > 1 && result == false) {
+
+                    result = fillExistingDataSS("salarySlipTable", personType);
+                    if (result == false) {
+                        $('#SalarySlipForm #PersonName').val('');
+                        $('#SalarySlipForm #PersonContactNo').val('');
+                    }
+                    // alert(result);
+
+
+                }
+                if (bankStatementRowsTable > 1 && result == false) {
+                    result = fillExistingDataSS("bankStatementTable", personType);
+                    if (result == false) {
+                        $('#SalarySlipForm #PersonName').val('');
+                        $('#SalarySlipForm #PersonContactNo').val('');
+                    }
+                    // alert(result);
+
+                }
+                if (tenantRowsTable > 1 && result == false) {
+
+                    result = fillExistingDataSS("tenantTable", personType);
+                    if (result == false) {
+                        $('#SalarySlipForm #PersonName').val('');
+                        $('#SalarySlipForm #PersonContactNo').val('');
+                    }
+                    //  alert(result);
+
+                }
+
+
+
+
+            }
+
+        });
+
+        //===================================//
+
+
+
+        //====================================//
+        function fillExistingDataSS(tableId, personType) {
+
+
+
+            var columnNumberOfPersonType = 1; //person type column
+
+            var isDone = false;
+
+            $.each($('#' + tableId).find('tr'), function () {
+
+                var tdPersonType = $(this).find('td').eq(columnNumberOfPersonType).text();
+                var tdPersonName = $(this).find('td').eq(2).text();
+
+
+                var AppName = $(this).find('td').eq(2).text();
+                var AppContact = $(this).find('td').eq(3).text();
+
+
+                if (tdPersonType == personType) {
+
+                    $('#SalarySlipForm #PersonName').val('');
+                    $('#SalarySlipForm #PersonContactNo').val('');
+
+                    $('#SalarySlipForm #PersonName').val(AppName);
+                    $('#SalarySlipForm #PersonContactNo').val(AppContact);
+                    isDone = true;
+                    return false;
+                }
+
+            });
+            return isDone;
+        }
+
+        //===================================//
+
+
+
+
+
+        $('#CreateSalarySlip').click(function () {
+            if ($('#SalarySlipForm').valid()) {
+
+                //var file = $("#PaySlip").get(0).files;
+
+                var data = new FormData;
+
+                var InquiryId = $('#InquiryId').val();
+                var OldPersonType = $('#SalarySlipForm #OldPersonType').val();
+                var PersonType = $('#SalarySlipForm #PersonType').val();
+                var SalarySlipVerificationId = $('#SalarySlipForm #SalarySlipVerificationId').val();
+                var PersonName = $('#SalarySlipForm #PersonName').val();
+                var OfficeName = $('#SalarySlipForm #OfficeName').val();
+                var PersonContactNo = $('#SalarySlipForm #PersonContactNo').val();
+                var OfficeAddress = $('#SalarySlipForm #OfficeAddress').val();
+                var NearestLandMark = $('#SalarySlipForm #NearestLandMark').val();
+
+                //data.append("PaySlip", file[0]);
+                data.append("InquiryId", InquiryId);
+                data.append("OldPersonType", OldPersonType);
+                data.append("PersonType", PersonType);
+                data.append("SalarySlipVerificationId", SalarySlipVerificationId);
+                data.append("PersonName", PersonName);
+                data.append("OfficeName", OfficeName);
+                data.append("PersonContactNo", PersonContactNo);
+                data.append("OfficeAddress", OfficeAddress);
+                data.append("NearestLandMark", NearestLandMark);
+
+
+
+
+
+                $.ajax({
+
+                    type: "Post",
+                    url: "/evs/Inquiry/CreateSalarySlip",
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        ClearPreview();
+                        if (data.status == 1) {
+                            //show message here for alert
+                            toastr.success(data.message, "Salary Slip Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            //add data to Salary Slip Table
+                            addDataToSalarySlipTable(data.data);
+                            //Reset Salary Slip Form.
+                            SSReset();
+                            ShowLoader(false, "");
+                        }
+                        else {
+                            toastr.error(data.message, "Salary Slip Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            ShowLoader(false, "");
+                        }
+
+
+
+                    }
+
+                })
+
+            }
+        });
+
+        ///new work end///
+
+        //old work
+        $('#CreateSalarySlip').click(function () {
+                            if ($('#SalarySlipForm').valid()) {
+
+                                var dataToPost = $('#SalarySlipForm').serializeObject();
+
+                                dataToPost.InquiryId = $('#InquiryId').val();
+                                dataToPost.OldPersonType = $('#SalarySlipForm #OldPersonType').val();//.find('#OldPersonType').val();
+
+                                ShowLoader(true, "Loading...");
+
+                                $.post('@Url.Action("CreateSalarySlip", "Inquiry")', { model: dataToPost },
+                                    function (data) {
+                                        if (data.status == 1) {
+                                            //show message here for alert
+                                            toastr.success(data.message, "Salary Slip Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                                            //add data to Residence Table
+                                            addDataToSalarySlipTable(data.data);
+                                            //Reset Residence Form.
+                                            SSReset();
+                                            ShowLoader(false, "");
+                                        }
+                                        else {
+                                            toastr.error(data.message, "Salary Slip Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                                            ShowLoader(false, "");
+                                        }
+                                    }).fail(function (jqXHR) {
+                                        ShowLoader(false, "");
+                                    });
+                            } else {
+                                toastr.error("Some required field are missing.", "Salary Slip Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            }
+
+                        });
+
+        function addDataToSalarySlipTable(SalarySlipList) {
+
+            var htmlRow = "";
+            var payslipView = "";
+
+            $(SalarySlipList).each(function (i, e) {
+
+
+                htmlRow += "<<tr id='" + e.SalarySlipVerificationId + "'>" +
+                           "<td class='hidden'><label id='SalarySlipVerificationId'>" +
+                           e.SalarySlipVerificationId + "</label><label id='OldPersonType'>" +
+                          e.PersonType + "</label></td>" +
+                                  "<td id='PersonType'>" + e.PersonType + "</td>" +
+                                "<td id='PersonName'>" + e.PersonName + "</td>" +
+                                "<td id='PersonContactNo'>" + e.PersonContactNo + "</td>" +
+                                "<td id='OfficeName'>" + e.OfficeName + "</td>" +
+                                "<td id='OfficeAddress'>" + e.OfficeAddress + "</td>" +
+                                "<td id='NearestLandMark'>" + e.NearestLandMark + "</td>" +
+                                "<td > " +
+                                 "   <button type='button' class='btn btn-primary' value='" + e.SalarySlipVerificationId + "' id='SalarySlipEdit' onclick='SSEdit(this);'><span class='glyphicon glyphicon-edit'>&nbsp</span> Edit </button> " +
+                                "</td> " +
+                            "</tr> ";
+
+
+
+            });
+
+            $('#salarySlipTable tbody').find('tr').remove();
+            $('#salarySlipTable').append(htmlRow);
+            $('#salarySlipTable').removeClass('hidden');
+
+        }
+
+        function SSEdit(button) {
+
+
+            tr = $('#salarySlipTable').find('#' + button.value);
+            var form = $('#SalarySlipForm');
+
+            $(form).find('#PersonType').val($(tr).find('#PersonType').html().trim());
+            $(form).find('#OldPersonType').val($(tr).find('#OldPersonType').html().trim());
+            $(form).find('#PersonName').val($(tr).find('#PersonName').html().trim());
+
+            $(form).find('#OfficeName').val($(tr).find('#OfficeName').html().trim());
+
+            $(form).find('#PersonContactNo').val($(tr).find('#PersonContactNo').html().trim());
+            $(form).find('#OfficeAddress').val($(tr).find('#OfficeAddress').html().trim());
+            $(form).find('#NearestLandMark').val($(tr).find('#NearestLandMark').html().trim());
+
+            $(form).find('#SalarySlipVerificationId').val($(tr).find('#SalarySlipVerificationId').html().trim());
+
+            //$(form).find('#PaySlip').val($(tr).find('#PaySlip').html().trim());
+
+        }
+        function SSReset() {
+
+            var form = $('#SalarySlipForm');
+            $(form).get(0).reset();
+            $("#SalarySlipForm input:hidden").val('');
+            ClearPreview();
+        }
+    </script>
+}

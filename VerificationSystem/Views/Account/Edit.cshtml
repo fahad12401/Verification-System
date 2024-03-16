@@ -1,0 +1,320 @@
+﻿@model VerificationSystem.Models.UserEditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3><strong> Update User</strong></h3>
+
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="box-body">
+
+                    <h5> <strong>Update User '@Model.UserName'</strong></h5>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.id)
+                    @Html.HiddenFor(model => model.Code)
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirstName)
+
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        @*Last Name*@
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LastName)
+
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+
+                        @*Email*@
+                        <div class="col-md-4">
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.Email)
+
+                                @Html.Hidden("OldEmail", Model.Email)
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            @*UserName*@
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserName)
+
+                                @Html.Hidden("OldUserName", Model.UserName)
+                                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                        @* Password *@
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Password)
+
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
+                        @*Confirm Password*@
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ConfirmPassword)
+
+                                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+          
+                    <div class="row">
+                        <div class="col-md-4">
+                            @*//Select  Branch*@
+                            <div class="form-group ">
+                                @Html.LabelFor(m => m.BranchId)
+
+                                @Html.DropDownListFor(x => x.BranchId, ViewBag.Branches as SelectList, "", new { @class = "form-control chosen-branch  ", data_placeholder = "Select a Branch" })
+                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Roles)
+
+                                @Html.ListBoxFor(x => x.Roles, ViewBag.Roles as MultiSelectList, new { @class = "form-control chosen-role", data_placeholder = "Select a Role", multiple = "multiple" })
+                                @Html.ValidationMessageFor(m => m.Roles, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                      
+                        </div>
+                    </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    @*Address*@
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Address)
+
+                                        @Html.TextAreaFor(m => m.Address, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                         
+
+                      
+                        
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            @Html.CheckBoxFor(model => model.IsActive)@Html.LabelFor(model => model.IsActive)
+                                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <br />
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="submit" value="Update User" class="btn btn-primary col-md-12" />
+                                </div>
+                            </div>
+                         
+                        </div>
+
+
+            }
+
+
+
+
+        </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    @section Styles{
+        @Styles.Render("~/Content/chosen")
+    }
+
+
+
+
+    @section Scripts
+{
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/chosen")
+        <script type="text/javascript">
+
+
+
+
+            //  $(function () {// call for page load.
+
+            $('input[type=text]').tooltip(
+                {
+                    placement: "right",
+                    trigger: "focus"
+                }
+           );
+
+            //setting for role required. when we use chosen
+            $.validator.setDefaults({ ignore: ":hidden:not(.chosen-role)" });
+
+            $(".chosen-role").chosen({ allow_single_deselect: true });
+
+            //For Enable Disable Multiple Roles
+            $('#Roles').change(function () {
+                var selected = [];
+                if (this.value == "") {
+                    $('.condition-div').addClass('hidden'); // hide all the conidional divs
+                    $('#CompanyId').val('');
+                    $('#CustomerBranchId').val('');
+                    //enable all roles
+
+                    $(".chosen-role").chosen({ allow_single_deselect: true });
+
+                    //$(this).trigger("chosen:updated");
+                    $("#Roles option").filter(function () {
+                        $(this).prop("disabled", false).trigger("chosen:updated");
+                    });
+                }
+                else {
+                    $('#Roles :selected').each(function () {
+                        var roles = selected[$(this).val()] = $(this).text();
+                       if (roles == '@constant.Roles.Fio' ||  roles == '@constant.Roles.Head') {
+                            $('#CompanyId').val('');
+                            $('#CustomerBranchId').val('');
+                            $('.condition-div.customer').addClass('hidden'); /// hide user role conditional divs
+                           
+
+                            // disable all customer option
+                            // update chosen
+                            $("#Roles option").filter(function () {
+                                var name = $(this).text();
+                                @*|| name == '@constant.Roles.CBranchHead'*@
+                                if (name == '@constant.Roles.Fio' || name == '@constant.Roles.Head') {
+                                    $(this).prop("disabled", true).trigger("chosen:updated");
+                                    // alert(name);
+                                }
+                            });
+
+                            $(".chosen-role").chosen({ allow_single_deselect: true });
+                            $.validator.setDefaults();
+
+                        }
+
+                    });
+                }
+            }).change();
+
+
+
+
+
+
+
+
+          
+
+
+            $("#CompanyId").change(function () {
+                @*|| '@User.IsInRole(constant.Roles.CBranchHead)'*@
+                if ('@User.IsInRole(constant.Roles.Head)') {
+                    $.get('@Url.Action("GetBranchesByCompany", "CustomerBranch")', { companyId: this.value },
+                        function (data) {
+                            if (data.status) {
+                                fillBranches(data.branches);
+                            }
+                            else {
+                                this.value = '';
+                                $('#CustomerBranchId').empty();
+                                $('#ParentCode').empty();
+
+                            }
+                        });
+                }
+            });
+
+
+
+            function fillBranches(list) {
+                $('#CustomerBranchId').empty();
+                $('#ParentCode').empty();
+                var options = '';
+                for (var i = 0; i < list.length; i++) {
+                    options += '<option value="' + list[i].CustomerBranchId + '">' + list[i].Name + '</option>';
+                }
+                $('#CustomerBranchId').append(options);
+                $('#ParentCode').append(options);
+                $('#CustomerBranchId').delay(1500).val('@Model.CustomerBranchId');
+                $('#ParentCode').delay(1500).val('@Model.ParentCode');
+
+            }
+
+
+            @if (Model !=  null)
+        {
+                 <text>
+
+            $(function () {
+                if ($("#CompanyId").val() > 0) {
+                    $('#CompanyId').change();
+                }
+
+            });
+            </text>
+         }
+         
+        </script>
+    }

@@ -1,0 +1,76 @@
+﻿@model List<VerificationSystem.DB.Product>
+@using GridMvc.Html;
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3><strong>All Products</strong></h3>
+                <br />
+                <p>
+                    @Html.ActionLink("Create New Product", "Create", null, new { @class = "btn btn-default" })
+                </p>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+
+
+            <div class="box-body">
+
+                <div>
+                    @helper GetActionLink(long id)
+                    {
+                    @Html.ActionLink("Edit", "Edit", new { id = id })
+                    <span>|</span>
+                    @Html.ActionLink("Details", "Details", new { id = id })
+
+}
+
+
+                    @Html.Grid(Model).Named("ProductGrid").Columns(c =>
+                {
+                    c.Add(x => x.ProductId).Titled("ID");
+                    c.Add(x => x.Name).Titled("Name");
+                    c.Add(x => x.Company.Name).Titled("Company Name").Filterable(true);
+                    c.Add(x => x.Description).Titled("Description");
+
+                    //c.Add(x => x.DisableDate).Titled("Disabled Date").Format("{0:dd-MM-yyyy}");
+
+
+                    c.Add().Titled("Actions").Encoded(false).Sanitized(false).SetWidth(150).RenderValueAs(s => GetActionLink(s.ProductId));
+
+                }).WithPaging(19, 19).Sortable()
+                </div>
+
+            </div>
+            <br />
+            <div class="box-footer">
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Styles {
+    @Styles.Render("~/Content/Gridmvc")
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/Gridmvc")
+
+}

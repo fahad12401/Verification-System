@@ -1,0 +1,126 @@
+﻿@model VerificationSystem.DB.Company
+@using VerificationSystem.Extensions
+@{
+    ViewBag.Title = "Company - Details";
+}
+
+
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="box box-primary">
+            <div class="box-body box-profile">
+
+
+                <h3 align="center"><strong>@Html.DisplayFor(model => model.Name)</strong></h3>
+
+                <h5 class="text-muted text-center"><strong>Company Details</strong></h5>
+
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>@Html.DisplayNameFor(model => model.Descriptions)</b>
+                        <strong> <a class="pull-right">@Html.DisplayFor(model => model.Descriptions)</a></strong>
+                    </li>
+                    <li class="list-group-item">
+                        <b>@Html.DisplayNameFor(model => model.Address)</b>
+
+                    </li>
+                    <li class="list-group-item" align="right">
+                        <b><a>@Html.DisplayFor(model => model.Address)</a></b>
+
+                    </li>
+                    <li class="list-group-item">
+                        <b>@Html.DisplayNameFor(model => model.Phone1)</b>
+                        <strong> <a class="pull-right">@Html.DisplayFor(model => model.Phone1)</a></strong>
+                    </li>
+                    <li class="list-group-item">
+                        <b>@Html.DisplayNameFor(model => model.Phone2)</b>
+                        <strong> <a class="pull-right">@Html.DisplayFor(model => model.Phone2)</a></strong>
+                    </li>
+                    @if (Model.DisableDate != null)
+                    {
+                        <li class="list-group-item">
+                            <b>@Html.DisplayNameFor(model => model.DisableDate)</b>
+                            <strong> <a class="pull-right">@Html.DisplayFor(model => model.DisableDate)</a></strong>
+                        </li>
+                    }
+
+
+                </ul>
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+                @Html.ActionLink("Edit", "Edit", new { id = Model.CompanyId }, new { @class = "btn btn-primary" })
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+
+<br />
+<br />
+
+@*<div class="col-md-offset-2">
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.CompanyId }) |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+
+    </div>*@
+
+
+
+@section Styles{
+
+    <style type="text/css">
+        dl {
+            font-family: sans-serif;
+        }
+
+        .dl-horizontal dt {
+            text-align: left;
+            margin-top: 5px;
+        }
+
+        .dl-horizontal dd {
+            border-bottom-style: inset;
+        }
+
+
+        @@media (min-width: 768px) {
+            .dl-horizontal dt {
+                float: left;
+                width: 180px;
+                clear: left;
+                text-overflow: ellipsis;
+                text-align: left;
+                margin-top: 5px;
+            }
+
+            .dl-horizontal dd {
+                margin-left: 190px;
+                border-bottom-style: inset;
+            }
+
+                .dl-horizontal dd:before,
+                .dl-horizontal dd:after {
+                    display: table;
+                    content: " ";
+                }
+
+                .dl-horizontal dd:after {
+                    clear: both;
+                }
+
+                .dl-horizontal dd:before,
+                .dl-horizontal dd:after {
+                    display: table;
+                    content: " ";
+                }
+
+                .dl-horizontal dd:after {
+                    clear: both;
+                }
+        }
+    </style>
+}
+

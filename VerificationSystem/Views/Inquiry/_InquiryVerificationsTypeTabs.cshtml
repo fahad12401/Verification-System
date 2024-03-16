@@ -1,0 +1,295 @@
+﻿@model VerificationSystem.DB.PersonVerifications
+
+@{
+    var personType = Model.PersonType.Replace(" ", String.Empty);
+    var PersonTypeIdForResidenceTab = personType + "Residence";
+    var PersonTypeIdForOfficeTab = personType + "Office";
+    var PersonTypeIdForTenantTab = personType + "Tenant";
+    var PersonTypeIdForSalaryTab = personType + "Salary";
+    var PersonTypeIdForBankTab = personType + "Bank";
+
+    int residenceCountN = 0;
+    int workOfficeCountN = 0;
+    int salarySlipCountN = 0;
+    int tenantCountN = 0;
+    int bankStatementCountN = 0;
+    bool activeTabTT = true;
+    bool activeContentTT = true;
+    string activeLinkClassTT = "active";
+    string activeContentClassTT = "active";
+}
+
+<style>
+    div.bhoechie-tab-container {
+        /*z-index: 10;*/
+        background-color: #ffffff;
+        padding: 0 !important;
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        border: 1px solid #ddd;
+        /*margin-top: 20px;*/
+        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        -moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        background-clip: padding-box;
+        opacity: 0.97;
+        filter: alpha(opacity=97);
+    }
+
+    div.bhoechie-tab-menu {
+        padding-right: 0;
+        padding-left: 0;
+        padding-bottom: 0;
+    }
+
+        div.bhoechie-tab-menu div.list-group {
+            margin-bottom: 0;
+        }
+
+            div.bhoechie-tab-menu div.list-group > a {
+                margin-bottom: 0;
+            }
+
+                div.bhoechie-tab-menu div.list-group > a .glyphicon,
+                div.bhoechie-tab-menu div.list-group > a .fa {
+                    color: #337ab7;
+                }
+
+                div.bhoechie-tab-menu div.list-group > a:first-child {
+                    border-top-right-radius: 0;
+                    -moz-border-top-right-radius: 0;
+                }
+
+                div.bhoechie-tab-menu div.list-group > a:last-child {
+                    border-bottom-right-radius: 0;
+                    -moz-border-bottom-right-radius: 0;
+                }
+
+                div.bhoechie-tab-menu div.list-group > a.active,
+                div.bhoechie-tab-menu div.list-group > a.active .glyphicon,
+                div.bhoechie-tab-menu div.list-group > a.active .fa {
+                    background-color: #337ab7;
+                    background-image: #337ab7;
+                    color: #ffffff;
+                }
+
+                    div.bhoechie-tab-menu div.list-group > a.active:after {
+                        content: '';
+                        position: absolute;
+                        left: 100%;
+                        top: 50%;
+                        margin-top: -13px;
+                        border-left: 0;
+                        border-bottom: 13px solid transparent;
+                        border-top: 13px solid transparent;
+                        border-left: 10px solid #337ab7;
+                    }
+
+    div.bhoechie-tab-content {
+        background-color: #ffffff;
+        /* border: 1px solid #eeeeee; */
+        /*padding-left: 20px;*/
+        padding-top: 10px;
+    }
+
+    div.bhoechie-tab div.bhoechie-tab-content:not(.active) {
+        display: none;
+    }
+</style>
+
+@{
+    bool renderScript = (bool)ViewData["ScriptSection"];
+}
+@if (renderScript == false)
+{
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">
+            @if (Model != null)
+            {
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu">
+                    <div class="list-group">
+
+                        @foreach (var residenceVerification in Model.ResidenceVerifications)
+                        {
+                            if (residenceVerification != null)
+                            {
+                                residenceCountN++;
+
+                                <a href="#" id="Residence_@residenceVerification.ResidenceVerificationId" class="SideLink_@personType  list-group-item Residence @residenceVerification.ResidenceVerificationId   @(activeTabTT ? activeLinkClassTT : "")">
+                                    <span class="glyphicon glyphicon-home" style="font-size:14px;"></span><b style="font-size:12px;">&nbsp;  Residence @residenceCountN</b>
+                                </a>
+                                activeTabTT = false;
+                            }
+
+                        }
+
+                        @foreach (var workOfficeVerification in Model.WorkOfficeVerifications)
+                        {
+                            if (workOfficeVerification != null)
+                            {
+                                workOfficeCountN++;
+                                <a href="#" id="WorkOffice_@workOfficeVerification.WorkOfficeVerificationId" class="SideLink_@personType list-group-item @workOfficeVerification.WorkOfficeVerificationId  @(activeTabTT ? activeLinkClassTT : "")">
+                                    <span class="glyphicon glyphicon-equalizer" style="font-size:14px;"></span><b style="font-size:12px;">&nbsp;  Office @workOfficeCountN </b>
+                                </a>
+                                activeTabTT = false;
+                            }
+                        }
+                        @foreach (var tenantVerification in Model.TenantVerifications)
+                        {
+                            if (tenantVerification != null)
+                            {
+                                tenantCountN++;
+                                <a href="#" id="Tenant_@tenantVerification.TenantVerificationId" class="SideLink_@personType list-group-item @tenantVerification.TenantVerificationId  @(activeTabTT ? activeLinkClassTT : "")">
+
+                                    <span class="glyphicon glyphicon-text-width"></span><b style="font-size:12px;">&nbsp;  Tenant @tenantCountN</b>
+                                </a>
+                                activeTabTT = false;
+                            }
+                        }
+                        @foreach (var salarySlipVerification in Model.SalarySlipVerifications)
+                        {
+                            if (salarySlipVerification != null)
+                            {
+                                salarySlipCountN++;
+                                <a href="#" id="SalarySlip_@salarySlipVerification.SalarySlipVerificationId" class="SideLink_@personType list-group-item @salarySlipVerification.SalarySlipVerificationId  @(activeTabTT ? activeLinkClassTT : "")">
+
+                                    <span class="glyphicon glyphicon-paperclip"> </span><b style="font-size:12px;">&nbsp;  SalarySlip @salarySlipCountN</b>
+                                </a>
+                                activeTabTT = false;
+                            }
+                        }
+                        @foreach (var bankStatmentVerification in Model.BankStatementVerifications)
+                        {
+                            if (bankStatmentVerification != null)
+                            {
+                                bankStatementCountN++;
+                                <a href="#" id="BankStatement_@bankStatmentVerification.BankStatementVerificationId" class="SideLink_@personType list-group-item @bankStatmentVerification.BankStatementVerificationId  @(activeTabTT ? activeLinkClassTT : "")">
+
+                                    <span class="glyphicon glyphicon-file"></span><b style="font-size:12px;">&nbsp;  BankStatement @bankStatementCountN</b>
+                                </a>
+                                activeTabTT = false;
+                            }
+                        }
+
+
+
+                    </div>
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab">
+
+
+                    @* first tab start *@
+                    @foreach (var residenceVerification in Model.ResidenceVerifications)
+                    {
+                        if (residenceVerification != null)
+                        {
+
+                            <div  id="ResidenceContent_@residenceVerification.ResidenceVerificationId"  class="Content_@personType bhoechie-tab-content @residenceVerification.ResidenceVerificationId @(activeContentTT ? activeContentClassTT : "")">
+                                @Html.Partial("_DetailResidence", residenceVerification, new ViewDataDictionary { { "ScriptSection", false } })
+                            </div>
+                            activeContentTT = false;
+                        }
+                    }
+
+                    @* first tab end *@
+
+
+
+
+
+                    @* second tab start *@
+                    @foreach (var workOfficeVerification in Model.WorkOfficeVerifications)
+                    {
+                        if (workOfficeVerification != null)
+                        {
+                            <div id="WorkOfficeContent_@workOfficeVerification.WorkOfficeVerificationId"  class="Content_@personType bhoechie-tab-content @workOfficeVerification.WorkOfficeVerificationId @(activeContentTT ? activeContentClassTT : "")">
+                                @Html.Partial("_DetailWorkOffice", workOfficeVerification, new ViewDataDictionary { { "ScriptSection", false } })
+                            </div>
+                            activeContentTT = false;
+
+                        }
+                    }
+
+                    @* second tab end *@
+
+
+
+
+                    @* third tab start *@
+                    @foreach (var tenantVerification in Model.TenantVerifications)
+                    {
+                        if (tenantVerification != null)
+                        {
+                            <div id="TenantContent_@tenantVerification.TenantVerificationId"  class="Content_@personType bhoechie-tab-content @tenantVerification.TenantVerificationId @(activeContentTT ? activeContentClassTT : "")">
+                                @Html.Partial("_DetailTenant", tenantVerification, new ViewDataDictionary { { "ScriptSection", false } })
+                            </div>
+                            activeContentTT = false;
+
+                        }
+                    }
+
+                    @* third tab end*@
+
+
+                    @* fourth tab start *@
+                    @foreach (var salarySlipVerification in Model.SalarySlipVerifications)
+                    {
+                        if (salarySlipVerification != null)
+                        {
+                            <div  id="SalarySlipContent_@salarySlipVerification.SalarySlipVerificationId" class="Content_@personType bhoechie-tab-content @salarySlipVerification.SalarySlipVerificationId @(activeContentTT ? activeContentClassTT : "")">
+                                @Html.Partial("_DetailSalarySlip", salarySlipVerification, new ViewDataDictionary { { "ScriptSection", false } })
+                            </div>
+                            activeContentTT = false;
+
+                        }
+                    }
+                    @* fourth tab end*@
+
+
+                    @* fifth tab start *@
+                    @foreach (var bankStatementVerification in Model.BankStatementVerifications)
+                    {
+                        if (bankStatementVerification != null)
+                        {
+                            <div id="BankStatementContent_@bankStatementVerification.BankStatementVerificationId" class="Content_@personType bhoechie-tab-content @bankStatementVerification.BankStatementVerificationId @(activeContentTT ? activeContentClassTT : "")">
+                                @Html.Partial("_DetailBankStatement", bankStatementVerification, new ViewDataDictionary { { "ScriptSection", false } })
+                            </div>
+                            activeContentTT = false;
+
+                        }
+                    }
+                    @* fifth tab end *@
+
+
+
+
+
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+
+    <script>
+        $(function () {
+             
+            $('.SideLink_@personType').click(function (e) {
+
+                e.preventDefault();
+                $(this).siblings('a.active').removeClass("active");
+                $(this).addClass('active');
+
+                var index = $(this).index();
+                $('.Content_@personType').removeClass('active');
+                $('.Content_@personType').eq(index).addClass('active');
+            });
+             
+        });
+    </script>
+}
+
+
+
+

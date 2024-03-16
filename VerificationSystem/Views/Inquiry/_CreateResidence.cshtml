@@ -1,0 +1,429 @@
+﻿@model VerificationSystem.Models.ResidenceCreateVM
+@{
+    bool renderScript = (bool)ViewData["ScriptSection"];
+
+}
+
+
+
+
+
+@if (renderScript == false)
+{
+
+
+    <div>
+
+
+        <table class="hidden text-left table table-striped" id="residenceTable">
+            <thead>
+                <tr>
+
+                    <th>
+                        Person Type
+                    </th>
+                    <th>
+                        Person Name
+                    </th>
+                    <th>
+                        Person Contact #
+                    </th>
+                    <th>
+                        Person CNIC
+                    </th>
+
+                    <th>
+                        Residence Address
+                    </th>
+                    <th>
+                        Nearest Landmark
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ResidenceVerifications)
+                {
+                    <tr id="@item.ResidenceVerificationId">
+                        <td class="hidden">
+                            <label id="ResidenceVerificationId">@item.ResidenceVerificationId</label>
+                            <label id="OldPersonType">@item.PersonType</label>
+                        </td>
+                        <td id="PersonType">@item.PersonType</td>
+                        <td id="PersonName">@item.PersonName</td>
+                        <td id="PersonContactNo">@item.PersonContactNo</td>
+                        <td id="PersonCNIC">@item.PersonCNIC</td>
+                        <td id="ResidenceAddress">@item.ResidenceAddress</td>
+                        <td id="NearestLandMark">@item.NearestLandMark</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" value="@item.ResidenceVerificationId" id="residenceEdit" onclick="REdit(this);"><span class="glyphicon glyphicon-edit">&nbsp</span> Edit </button>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h4>Create / Update Residence Verifications</h4>
+
+                </div>
+                <div class="box-body">
+                    @using (Html.BeginForm("CreateResidence", "Inquiry", FormMethod.Post, new { name = "ResidenceForm", id = "ResidenceForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @*<div class="row">
+                                @Html.ValidationSummary(false, "", new { @class = "text=danger" })
+                            </div>*@
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                @Html.HiddenFor(x => x.ResidenceVerificationId)
+                                @Html.HiddenFor(x => x.OldPersonType)
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonType, new { @class = " control-label" })
+
+                                            @Html.DropDownListFor(x => x.PersonType, Model.PersonTypeList, "", new { @class = " form-control chosen-branch  ", data_placeholder = "Select a Branch" })
+
+                                            @Html.ValidationMessageFor(m => m.PersonType, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonName, new { @class = " control-label" })
+
+
+                                            @Html.TextBoxFor(m => m.PersonName, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.PersonName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonCNIC, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.PersonCNIC, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.PersonCNIC, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonContactNo, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.PersonContactNo, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.PersonContactNo, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ResidenceAddress, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.ResidenceAddress, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.ResidenceAddress, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.NearestLandMark, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.NearestLandMark, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.NearestLandMark, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="col-md-4">
+                                    <br />
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+
+                                            <input type="button" class="btn btn-primary btn-block" value="Save" id="CreateResidence">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+
+                                            <input type="button" class="btn btn-warning btn-block" value="Reset" id="buttonReset" onclick="RReset();">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+else
+{
+
+
+    <script type="text/javascript">
+
+        //====================================//
+
+        $("#ResidenceForm #PersonType").change(function () {
+
+            var residenceTableRowsLength = $('#residenceTable tr').length;
+            var bankStatementRowsTable = $('#bankStatementTable tr').length;
+            var salarySlipRowsTable = $('#salarySlipTable tr').length;
+            var tenantRowsTable = $('#tenantTable tr').length;
+            var workOfficeRowsTable = $('#workOfficeTable tr').length;
+
+            var personType = $("#ResidenceForm #PersonType option:selected").val();
+            if (personType == '@constant.PersonType.Applicant') {
+                var AppName = $('#InquiryForm #AppName').val();
+                var AppContact = $('#InquiryForm #AppContact').val();
+                var AppCNIC = $('#InquiryForm #AppCNIC').val();
+
+                $('#ResidenceForm #PersonName').val(AppName);
+                $('#ResidenceForm #PersonContactNo').val(AppContact);
+                $('#ResidenceForm #PersonCNIC').val(AppCNIC);
+            }
+            else {
+                var result = false;
+                if (residenceTableRowsLength > 1 && result == false) {
+
+                    result = fillExistingData("residenceTable", personType);
+                    if (result == false) {
+                        $('#ResidenceForm #PersonName').val('');
+                        $('#ResidenceForm #PersonContactNo').val('');
+                        $('#ResidenceForm #PersonCNIC').val('');
+                    }
+                    // alert(result);
+                }
+                if (workOfficeRowsTable > 1 && result == false) {
+
+                    result = fillExistingData("workOfficeTable", personType);
+                    if (result == false) {
+                        $('#ResidenceForm #PersonName').val('');
+                        $('#ResidenceForm #PersonContactNo').val('');
+                        $('#ResidenceForm #PersonCNIC').val('');
+                    }
+                    // alert(result);
+                }
+                if (salarySlipRowsTable > 1 && result == false) {
+
+                    result = fillExistingData("salarySlipTable", personType);
+                    if (result == false) {
+                        $('#ResidenceForm #PersonName').val('');
+                        $('#ResidenceForm #PersonContactNo').val('');
+                        $('#ResidenceForm #PersonCNIC').val('');
+                    }
+                    // alert(result);
+                }
+                if (bankStatementRowsTable > 1 && result == false) {
+                    result = fillExistingData("bankStatementTable", personType);
+                    if (result == false) {
+                        $('#ResidenceForm #PersonName').val('');
+                        $('#ResidenceForm #PersonContactNo').val('');
+                        $('#ResidenceForm #PersonCNIC').val('');
+                    }
+                    // alert(result);
+                }
+                if (tenantRowsTable > 1 && result == false) {
+
+                    result = fillExistingData("tenantTable", personType);
+                    if (result == false) {
+                        $('#ResidenceForm #PersonName').val('');
+                        $('#ResidenceForm #PersonContactNo').val('');
+                        $('#ResidenceForm #PersonCNIC').val('');
+                    }
+                    // alert(result);
+                }
+
+
+
+            }
+
+        });
+
+        //===================================//
+
+
+
+        //====================================//
+        function fillExistingData(tableId, personType) {
+
+            var columnNumberOfPersonType = 1; //person type column
+            var isDone = false;
+
+            $.each($('#' + tableId).find('tr'), function () {
+
+                var tdPersonType = $(this).find('td').eq(columnNumberOfPersonType).text();
+
+                var AppName = $(this).find('td').eq(2).text();
+                var AppContact = $(this).find('td').eq(3).text();
+
+
+                if (tdPersonType == personType) {
+
+                    $('#ResidenceForm #PersonName').val('');
+                    $('#ResidenceForm #PersonContactNo').val('');
+                    $('#ResidenceForm #PersonCNIC').val('');
+
+                    $('#ResidenceForm #PersonName').val(AppName);
+                    $('#ResidenceForm #PersonContactNo').val(AppContact);
+                    // $('#ResidenceForm #PersonCNIC').val(AppCNIC);
+                    isDone = true;
+                    return false;
+                }
+            });
+            return isDone;
+        }
+        //===================================//
+
+
+        $('#CreateResidence').click(function () {
+            if ($('#ResidenceForm').valid()) {
+                var dataToPost = $('#ResidenceForm').serializeObject();
+
+                dataToPost.InquiryId = $('#InquiryId').val();
+                dataToPost.OldPersonType = $('#ResidenceForm #OldPersonType').val();//.find('#OldPersonType').val();
+
+                //if ($("#person_type_disable_dropdown").val().length > 0) {
+                //    dataToPost.PersonType = $('#person_type_disable_dropdown').val();
+                //}
+
+                ShowLoader(true, "Loading...");
+
+                $.post('@Url.Action("CreateResidence", "Inquiry")', { model: dataToPost },
+                    function (data) {
+                        if (data.status == 1) {
+                            //show message here for alert
+                            toastr.success(data.message, "Residence Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            //add data to Residence Table
+                            addDataToResidencTable(data.data);
+                            //Reset Residence Form.
+                            RReset();
+                            ShowLoader(false, "");
+                        }
+                        else {
+                            toastr.error(data.message, "Residence Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            ShowLoader(false, "");
+                        }
+                    }).fail(function (jqXHR) {
+                        ShowLoader(false, "");
+                    });
+            } else {
+                toastr.error("Some required field are missing.", "Residence Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+            }
+        });
+
+        function addDataToResidencTable(residenceList) {
+
+            var htmlRow = "";
+
+            $(residenceList).each(function (i, e) {
+
+                htmlRow += "<tr id='" + e.ResidenceVerificationId + "'>" +
+                                "<td class='hidden'><label id='ResidenceVerificationId'>" +
+                                e.ResidenceVerificationId + "</label><label id='OldPersonType'>" +
+                                e.PersonType + "</label></td>" +
+                                  "<td id='PersonType'>" + e.PersonType + "</td>" +
+                                "<td id='PersonName'>" + e.PersonName + "</td>" +
+                                "<td id='PersonContactNo'>" + e.PersonContactNo + "</td>" +
+                                "<td id='PersonCNIC'>" + e.PersonCNIC + "</td>" +
+                                "<td id='ResidenceAddress'>" + e.ResidenceAddress + "</td>" +
+                                "<td id='NearestLandMark'>" + e.NearestLandMark + "</td>" +
+                                "<td >" +
+                                 "   <button type='button' class='btn btn-primary' value='" + e.ResidenceVerificationId + "' id='residenceEdit' onclick='REdit(this);'><span class='glyphicon glyphicon-edit'>&nbsp</span> Edit </button> " +
+                                "</td> " +
+                            "</tr> ";
+            });
+
+            $('#residenceTable tbody').find('tr').remove();
+            $('#residenceTable').append(htmlRow);
+            $('#residenceTable').removeClass('hidden');
+
+        }
+
+        function REdit(button) {
+
+            tr = $('#residenceTable').find('#' + button.value);
+            var form = $('#ResidenceForm');
+
+            $(form).find('#PersonType').val($(tr).find('#PersonType').html().trim());
+
+            $(form).find('#OldPersonType').val($(tr).find('#OldPersonType').html().trim());
+
+            $(form).find('#PersonName').val($(tr).find('#PersonName').html().trim());
+            $(form).find('#PersonCNIC').val($(tr).find('#PersonCNIC').html().trim());
+
+            $(form).find('#PersonContactNo').val($(tr).find('#PersonContactNo').html().trim());
+            $(form).find('#ResidenceAddress').val($(tr).find('#ResidenceAddress').html().trim());
+            $(form).find('#NearestLandMark').val($(tr).find('#NearestLandMark').html().trim());
+
+            $(form).find('#ResidenceVerificationId').val($(tr).find('#ResidenceVerificationId').html().trim());
+
+        }
+        function RReset() {
+
+
+            var form = $('#ResidenceForm');
+            $(form).get(0).reset();
+            $("#ResidenceForm input:hidden").val('');
+
+        }
+    </script>
+
+}

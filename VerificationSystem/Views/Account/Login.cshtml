@@ -1,0 +1,115 @@
+﻿@model VerificationSystem.Models.LoginViewModel
+@{
+    Layout = "";
+
+}
+
+
+<!DOCTYPE html>
+<!--
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>Login - Person Verification System </title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    @Styles.Render("~/Content/Login")
+
+    @if ((Request.Browser.Browser == "IE") && ((Request.Browser.MajorVersion < 9)))
+    {
+        @Scripts.Render("~/bundles/jqueryold")
+    }
+    else
+    {
+        @Scripts.Render("~/bundles/jquery")
+    }
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+
+
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="hold-transition login-page" style="background-image: linear-gradient(-225deg, #CBBACC 0%, #2580B3 100%);">
+
+
+    <div class="login-box">
+
+       
+
+            <h4 class="login-box-msg"><b>Person Verification System</b></h4>
+            <!-- BEGIN LOGIN FORM -->
+            <hr />
+            <h5><b>Sign In..</b> </h5>
+            <form class="login-form" action="login?returnUrl=@ViewBag.ReturnUrl" method="post">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(m => m.UserName, "", new { @class = "form-control form-control-solid placeholder-no-fix", placeholder = "Username" })
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group has-feedback">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-solid placeholder-no-fix", placeholder = "Password" })
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                @Html.CheckBoxFor(x => x.RememberMe, new { @class = "checkbox" })
+                                @Html.LabelFor(x => x.RememberMe)
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-success uppercase btn-block">Sign In</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+              
+
+            </form>
+            <!-- END LOGIN FORM -->
+
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+    @Scripts.Render("~/bundles/Login")
+    <script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+    </script>
+
+
+
+
+</body>
+
+</html>
+
+
+
+
+

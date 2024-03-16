@@ -1,0 +1,196 @@
+﻿@model VerificationSystem.DB.BankStatementVerification
+@using VerificationSystem.Extensions
+@using GridMvc.Html
+@{
+    string isCustomerBuild = System.Configuration.ConfigurationManager.AppSettings["customerBuild"];
+    string imageServer = System.Configuration.ConfigurationManager.AppSettings["imageServer"];
+}
+
+  
+    <div class="box-body">
+
+<div id="@(Model.BankStatementVerificationId)tabs-bankstatement-main" style="border-style:none;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <ul>
+                <li><a href="#@(Model.BankStatementVerificationId)TabBankStatementDetail" style="border-bottom-style:inset;">Detail</a></li>
+                <li><a href="#@(Model.BankStatementVerificationId)TabBankStatementStatus" style="border-bottom-style:inset;">Status History</a></li>
+            </ul>
+            <div id="@(Model.BankStatementVerificationId)TabBankStatementDetail">
+                <div class="row">
+            
+                        <div id="@(Model.BankStatementVerificationId)tabs-bankstatement-detail" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6">
+                                @*@PersonTypeIdForBankTab*@
+                                @* Bank Statement Verification Section start*@
+                                <div class="row">
+
+                                    <div>
+                                        <h4 class="text-left col-lg-12 col-md-12"><u><strong>Bank Statement Verification</strong></u></h4>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                Person Name
+                                            </dt>
+
+                                            <dd>
+                                                @Model.PersonName
+                                            </dd>
+                                            <dt>
+                                                Person Contact No
+                                            </dt>
+
+                                            <dd>
+                                                @Model.PersonContactNo
+                                            </dd>
+                                            <dt>
+                                                Bank Name
+                                            </dt>
+
+                                            <dd>
+                                                @Model.BankName
+                                            </dd>
+                                            <dt>
+                                                Bank Address
+                                            </dt>
+
+                                            <dd>
+                                                @Model.BankAddress
+                                            </dd>
+                                            <dt>
+                                                Nearest LandMark
+                                            </dt>
+                                            <dd>
+                                                @Model.NearestLandMark
+                                            </dd>
+
+                                            @if (Model.Status == constant.Status.Completed || Model.Status == constant.Status.QualityCheck)
+                                            {
+
+                                                <dt>
+                                                    Gps Location
+
+                                                </dt>
+                                                <dd>
+                                                    @Model.GpsLocation
+                                                </dd>
+
+
+                                                <dt>
+
+                                                    GPS URL
+                                                </dt>
+                                                <dd>
+                                                    <a href="@Model.GpsURL" class="btn btn-primary" title="Physical Location" style="color:white" target="_blank"><i style="margin-right: 0.7em; color: white;" class="glyphicon glyphicon-map-marker"></i>Show on Map</a>
+                                                </dd>
+
+                                                <dt>
+                                                    General Comments
+                                                </dt>
+                                                <dd>
+                                                    @Model.GeneralComments
+                                                </dd>
+
+                                                <dt>
+                                                    Outcome Of Verification
+                                                </dt>
+                                                <dd>
+                                                    @Model.OutComeVerification
+                                                </dd>
+
+
+                                                <dt>
+                                                    Verified By
+                                                </dt>
+                                                <dd>
+                                                    @Model.VerifiedBy
+                                                </dd>
+
+                                            }
+
+                                        </dl>
+                                    </div>
+                                    <br />
+                                </div>
+                                @* Bank Statement Verification Section end *@
+
+
+                            </div> @* Tab Main columns *@
+
+
+                            <div class="col-md-6">
+                                @if (Model.Status == constant.Status.Completed || Model.Status == constant.Status.QualityCheck)
+                                {
+                                    //if (Model.Inquiry.Images.Any(x => x.PersonType == Model.PersonType))
+                                    if (Model.Images.Count > 0)
+                                    {
+
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Verification Images</strong></u></h4>
+                                        </div>
+                                        foreach (var item in Model.Images)
+                                        {
+                                            if (!string.IsNullOrEmpty(imageServer))
+                                            {
+                                                <div class="col-xs-6 col-sm-5 col-lg- col-md-5">
+                                                   <!-- <img id="img1" class="thumbnail img-responsive myimage" title="@item.PersonType" onclick="ImageOnClick(this);" src="@Html.GetImageInBase64Server(item.ImagePath)" alt="Image" />-->
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-6 col-sm-5 col-lg- col-md-5">
+                                                  <!--  <img id="img1" class="thumbnail img-responsive myimage" title="@item.PersonType" onclick="ImageOnClick(this);" src="@Html.GetImageInBase64(item.ImagePath)" alt="Image" /> -->
+                                                </div>
+                                            }
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <h3 class="text-center HeadingStyle col-lg-12 col-md-12 " style="color:orangered">No Verification Images Found</h3>
+                                    }
+                                }
+                            </div>
+
+                        </div> @* Tab Main row *@
+                   
+                </div>
+            </div>
+            <div id="@(Model.BankStatementVerificationId)TabBankStatementStatus">
+                <div class="row">
+                    <div id="@(Model.BankStatementVerificationId)tabs-bankstatement-status" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow:auto">
+                                @*<div class="well well-sm" style="background-color:#337ab7; color:white; overflow:hidden;">
+                            <h3 class="text-left col-lg-12 col-md-12">Status History</h3>
+                        </div>*@
+
+                                @Html.Grid(Model.Statuses).Named("Statuses").Columns(c =>
+                       {
+                           c.Add(x => x.ApplicationUsers.UserName).Titled("Username");
+                           //c.Add(x => x.PersonType).Titled("PersonType");
+                           //c.Add(x => x.VerificationType).Titled("VerificationType");
+
+                           c.Add(x => x.StatusMessage).Titled("StatusMessage");
+                           c.Add(x => x.Descriptions).Titled("Descriptions");
+
+                           c.Add(x => x.StatusDate).Titled("Status Date").Format("{0:dd-MM-yyyy hh:mm tt}");
+
+
+                       })
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+ 
