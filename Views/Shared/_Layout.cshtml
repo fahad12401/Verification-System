@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129194365-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-129194365-1');
+    </script>
+
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title - Verification System</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+
+    @Styles.Render("~/Content/ui")
+    @Styles.Render("~/Content/toastr")
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    @RenderSection("styles", required: false)
+
+</head>
+
+
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href='@Url.Action("Index", "Dashboard")' class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>PVS</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span style="font-size:13px;"><b>Person Verification System</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                @Html.Partial("_LoginPartial")
+
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="~/UI/Dist/img/avatar5.png" class="img-circle" alt="Image">
+
+                    </div>
+                    <div class="pull-left info">
+                        @if (Request.IsAuthenticated)
+                        {
+
+                            <p>
+                                @using Microsoft.AspNet.Identity
+                                @User.Identity.GetUserName()
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                User
+                            </p>
+                        }
+                       
+                    </div>
+                </div>
+
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li class="header">MAIN NAVIGATION</li>
+
+
+                    <li>
+                        <a href="@Url.Action("Index", "Dashboard")">
+                            <i class="fa fa-home"></i> <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Inquiry")">
+                            <i class="fa fa-check"></i> <span>Inquiries</span>
+                        </a>
+                    </li>
+
+
+                    @if (User.IsInRole(constant.Roles.Head) || User.IsInRole(constant.Roles.SuperAdmin))
+                    {
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-plus"></i>
+                                <span>Create</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-plus"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("Create","Inquiry")"><i class="fa fa-plus"></i>Regular</a></li>
+                                <li><a href="@Url.Action("Create","Inquiry")"><i class="fa fa-plus"></i>Custom</a></li>
+                            </ul>
+                        </li>
+                        @*<li><a href="@Url.Action("Create","Inquiry")"><i class="fa fa-plus"></i><span>Create Inquiry</span></a></li>*@
+                    }
+
+
+
+                    @if (User.IsInRole(constant.Roles.SuperAdmin) || User.IsInRole(constant.Roles.Head))
+                    {
+
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-industry"></i>
+                                <span>Company</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("Index","Company")"><i class="fa fa-list"></i> All Companies</a></li>
+                                <li><a href="@Url.Action("Create","Company")"><i class="fa fa-plus"></i> Create New Company</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-bank"></i>
+                                <span>Customer Branch</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("Index","CustomerBranch")"><i class="fa fa-list"></i> All Branches</a></li>
+                                <li><a href="@Url.Action("Create","CustomerBranch")"><i class="fa fa-plus"></i> Create New Branch</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-link"></i>
+                                <span>Product</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("Index","Product")"><i class="fa fa-list"></i> All Products</a></li>
+                                <li><a href="@Url.Action("Create","Product")"><i class="fa fa-plus"></i> Create New Product</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-user"></i>
+                                <span>Account</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("Index","Account")"><i class="fa fa-users"></i> All Users</a></li>
+                                <li><a href="@Url.Action("Register","Account")"><i class="fa fa-plus"></i> Create New User</a></li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        @*<div class="content-wrapper" style="background-color:#eceff1;">*@
+        <div class="content-wrapper">
+
+            <!-- Content Header (Page header) -->
+            <section class="content-header"></section>
+
+            <!-- Main content -->
+            <section class="content">
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+
+                        @Html.Partial("_Notifications")
+                        @RenderBody()
+
+                    </div>
+                </div>
+
+
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+      
+
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery 3 -->
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    @Scripts.Render("~/bundles/ui")
+    @Scripts.Render("~/bundles/toastr")
+    @Scripts.Render("~/bundles/bootbox")
+
+
+    <style>
+        body {
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+    </style>
+
+    <script>
+
+        /** add active class and stay opened when selected */
+        var url = window.location;
+
+        // for sidebar menu entirely but not cover treeview
+        $('ul.sidebar-menu a').filter(function () {
+            return this.href == url;
+        }).parent().addClass('active');
+
+        // for treeview
+        $('ul.treeview-menu a').filter(function () {
+            return this.href == url;
+        }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+
+
+        $(function () {
+            $.fn.serializeObject = function () {
+
+                var form = {};
+                $.each($(this).serializeArray(), function (i, field) {
+                    form[field.name] = field.value || "";
+                });
+
+                return form;
+            };
+        });
+        function setParam(uri, key, val) {
+            return uri
+                .replace(RegExp("([?&]" + key + "(?=[=&#]|$)[^#&]*|(?=#|$))"), "&" + key + "=" + encodeURIComponent(val))
+                .replace(/^([^?&]+)&/, "$1?");
+        }
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-left",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        function ShowLoader(condition, message) {
+
+            if (condition) {
+                bootbox.dialog({
+                    message: '<div class="text-center"><i class="fa fa-spin fa-spinner fa-2x"></i>  <br/> <span >' + message + '  </span></div>', closeButton: false
+                });
+            } else {
+                bootbox.hideAll();
+            }
+        }
+
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

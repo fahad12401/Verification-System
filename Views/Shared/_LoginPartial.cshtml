@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNet.Identity
+
+<div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+        <!-- Messages: style can be found in dropdown.less-->
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="~/UI/Dist/img/avatar5.png" class="user-image" alt="Image">
+                <span class="hidden-xs" style="margin-right:20px;">
+                    @if (Request.IsAuthenticated)
+                    {
+
+                        <text>  @User.Identity.GetUserName()</text>
+
+                    }
+                    else
+                    {
+                        <text>User</text>
+                    }
+                </span>
+            </a>
+            <ul class="dropdown-menu">
+                <!-- User image -->
+                <li class="user-header">
+                    <img src="~/UI/Dist/img/avatar5.png" class="img-circle" alt="Image">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <p>
+                            @User.Identity.GetUserName()
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            User
+                        </p>
+                    }
+                </li>
+                <!-- Menu Body -->
+                <li class="user-body">
+                    <div class="row" style="text-align:center;">
+                        @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                {
+                                @Html.AntiForgeryToken()
+
+
+                                <ul style="padding:8px;">
+                                    <li class="list-unstyled" style="margin-bottom:15px;">
+                                        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "btn btn-default btn-flat" })
+                                    </li>
+                                    <li class="list-unstyled">
+                                        <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-default btn-flat">Log off</a>
+                                    </li>
+                                </ul>
+
+
+                            }
+                        }
+                        else
+                        {
+                            <div class="pull-right">
+                                <ul>
+                                    <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                                    <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                                </ul>
+                            </div>
+                        }
+
+                    </div>
+                    <!-- /.row -->
+                </li>
+              
+
+            </ul>
+        </li>
+
+
+    </ul>
+</div>

@@ -1,0 +1,389 @@
+﻿@model VerificationSystem.Models.InquiryVerificationVM
+@{
+    bool renderScript = (bool)ViewData["ScriptSection"];
+}
+
+@functions {
+
+    public List<VerificationSystem.DB.ApplicationUser> GetFilteredUsers(long branchId, string[] selectedUserIds)
+    {
+
+        if (User.IsInRole(constant.Roles.SuperAdmin))
+        {
+            return Model.FIOUsers.Where(x => x.BranchId == branchId || selectedUserIds.Contains(x.Id)).ToList();
+        }
+        else 
+        {
+            return Model.FIOUsers.ToList();
+        }
+    }
+}
+
+@if (renderScript == false)
+{
+    //id can be verification type id ,
+    @helper GetAssignAction(string id, long inquiryId, long branchId, string[] userIds, string personType, string verificationType, string status)
+    {
+
+var users = GetFilteredUsers(branchId, userIds);
+var disabled = status == constant.Status.Completed || status == constant.Status.QualityCheck ? "disabled" : "";
+
+var btnTitle = userIds.Count() > 0 ? "Update" : "Assign";
+
+var btnStyle = userIds.Count() > 0 ? "glyphicon-transfer" : "glyphicon-share-alt";
+
+
+if (User.IsInRole(constant.Roles.Head) ||  User.IsInRole(constant.Roles.SuperAdmin))
+{
+        @Html.ListBox(id, new MultiSelectList(users, "Id", "UserName", "Branch.Name", userIds), new { @class = "form-control chosen-select " + disabled, data_placeholder = "Select FIO users ", style = "width:230px;" })
+        <span>|</span>
+        <button id="@id" type="button" class="btn btn-default btn-action @disabled " personType="@personType" verificationType="@verificationType" value="@id" inquiryId="@inquiryId" title="@btnTitle">
+            <i class="glyphicon @btnStyle"></i>
+        </button>
+}
+else
+{
+        <text>N/A</text>
+}
+
+}
+
+    <div>
+
+        @* Residence Verification  *@
+        @if (Model.Inquiry.ResidenceVerifications != null && Model.Inquiry.ResidenceVerifications.Count > 0)
+        {
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="6"><h4><strong>Residence Verification(s)</strong></h4></th>
+                                </tr>
+                                <tr>
+                                    <th>Person Type</th>
+                                    <th>Name</th>
+                                    <th>CNIC</th>
+                                    <th>Contact</th>
+                                    <th>Address</th>
+                                    <th>Nearest Landmark</th>
+                                    <th>Status</th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.Inquiry.ResidenceVerifications.OrderBy(x => x.PersonType))
+                    {
+                                    <tr>
+                                        <td class="grid-row">@item.PersonType</td>
+                                        <td>@item.PersonName</td>
+                                        <td>@item.PersonCNIC</td>
+                                        <td>@item.PersonContactNo</td>
+                                        <td>@item.ResidenceAddress</td>
+                                        <td>@item.NearestLandMark</td>
+                                        <td>@item.Status</td>
+                                        <td width="300px">
+
+                                            @GetAssignAction(item.ResidenceVerificationId.ToString(), item.Inquiry.InquiryId, item.Inquiry.BranchId, item.InquiryApplicationUser.Where(x => x.VerificationId == item.ResidenceVerificationId).Select(x => x.UserId).ToArray(), item.PersonType, constant.VerificationType.Residence, item.Status)
+
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @* Work Office Verification *@
+        @if (Model.Inquiry.WorkOfficeVerifications != null && Model.Inquiry.WorkOfficeVerifications.Count > 0)
+        {
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="6"><h4><strong>Work Office Verification(s)</strong></h4></th>
+                                </tr>
+                                <tr>
+                                    <th class="grid-header">Person Type</th>
+                                    <th class="grid-header">Contact</th>
+                                    <th class="grid-header">Designation</th>
+                                    <th class="grid-header">Office Name</th>
+                                    <th class="grid-header">Office Address</th>
+                                    <th class="grid-header">Nearest Landmark</th>
+                                    <th class="grid-header">Status</th>
+                                    <th class="grid-header">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.Inquiry.WorkOfficeVerifications.OrderBy(x => x.PersonType))
+                                {
+                                    <tr>
+                                        <td>@item.PersonType</td>
+                                        <td>@item.PersonContactNo</td>
+                                        <td>@item.PersonDesignation</td>
+                                        <td>@item.OfficeName</td>
+                                        <td>@item.OfficeAddress</td>
+                                        <td>@item.NearestLandMark</td>
+                                        <td>@item.Status</td>
+                                        <td width="300px">
+                                            @GetAssignAction(item.WorkOfficeVerificationId.ToString(), item.Inquiry.InquiryId, item.Inquiry.BranchId, item.InquiryApplicationUser.Where(x => x.VerificationId == item.WorkOfficeVerificationId).Select(x => x.UserId).ToArray(), item.PersonType, constant.VerificationType.WorkOffice, item.Status)
+                                        </td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @* Tenant Verification *@
+        @if (Model.Inquiry.TenantVerifications != null && Model.Inquiry.TenantVerifications.Count > 0)
+        {
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="6"><h4><strong>Tenant Verification(s)</strong></h4></th>
+                            </tr>
+                            <tr>
+                                <th class="grid-header">Person Type</th>
+                                <th class="grid-header">Person Name</th>
+                                <th class="grid-header">Person Contact</th>
+                                <th class="grid-header">NearestLandMark</th>
+                                <th class="grid-header">Tenant Name</th>
+                                <th class="grid-header">Tenant Address</th>
+                                <th class="grid-header">Status</th>
+                                <th class="grid-header">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.Inquiry.TenantVerifications.OrderBy(x => x.PersonType))
+                            {
+                                <tr>
+                                    <td>@item.PersonType</td>
+                                    <td>@item.PersonName</td>
+                                    <td>@item.PersonContactNo</td>
+                                    <td>@item.NearestLandMark</td>
+                                    <td>@item.TenantName</td>
+                                    <td>@item.TenantAddress</td>
+                                    <td>@item.Status</td>
+
+                                    <td width="300px">
+                                        @GetAssignAction(item.TenantVerificationId.ToString(), item.Inquiry.InquiryId, item.Inquiry.BranchId, item.InquiryApplicationUser.Where(x => x.VerificationId == item.TenantVerificationId).Select(x => x.UserId).ToArray(), item.PersonType, constant.VerificationType.Tenant, item.Status)
+                                    </td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                        <tfoot></tfoot>
+                    </table>
+
+                </div>
+
+            </div>
+        }
+
+        @* Salary Slip Verification *@
+        @if (Model.Inquiry.SalarySlipVerifications != null && Model.Inquiry.SalarySlipVerifications.Count > 0)
+        {
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="6"><h4><strong>Salary Slip Verification(s)</strong></h4></th>
+                            </tr>
+                            <tr>
+                                <th class="grid-header">Person Type</th>
+                                <th class="grid-header">Person Name</th>
+                                <th class="grid-header">Person Contact</th>
+                                <th class="grid-header">Office Name</th>
+                                <th class="grid-header">Office Address</th>
+                                <th class="grid-header">Nearest Landmark</th>
+                                <th class="grid-header">Pay Slip</th>
+                                <th class="grid-header">Status</th>
+                                <th class="grid-header">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.Inquiry.SalarySlipVerifications.OrderBy(x => x.PersonType))
+                            {
+                                <tr>
+                                    <td>@item.PersonType</td>
+                                    <td>@item.PersonName</td>
+                                    <td>@item.PersonContactNo</td>
+                                    <td>@item.OfficeName</td>
+                                    <td>@item.OfficeAddress</td>
+                                    <td>@item.NearestLandMark</td>
+
+                                    @if (@item.PaySlipPath != null)
+                                    {
+
+                                        <td>
+                                            <a href='@Url.Action("DownloadPaySlip", "Inquiry", new { Path = @item.PaySlipPath })' class='btn btn-default' target="_blank">
+                                                <span class='glyphicon glyphicon-download'></span>
+                                            </a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td><p>N/A</p></td>
+                                    }
+                                    <td>@item.Status</td>
+                                    <td width="300px">
+                                        @GetAssignAction(item.SalarySlipVerificationId.ToString(), item.Inquiry.InquiryId, item.Inquiry.BranchId, item.InquiryApplicationUser.Where(x => x.VerificationId == item.SalarySlipVerificationId).Select(x => x.UserId).ToArray(), item.PersonType, constant.VerificationType.SalarySlip, item.Status)
+                                    </td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+            </div>
+        }
+
+        @* Bank Statement Verification *@
+        @if (Model.Inquiry.BankStatementVerifications != null && Model.Inquiry.BankStatementVerifications.Count > 0)
+        {
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="6"><h4><strong>Bank Statement Verification(s)</strong></h4></th>
+                            </tr>
+                            <tr>
+                                <th class="grid-header">Person Type</th>
+                                <th class="grid-header">Person Name</th>
+                                <th class="grid-header">Person Contact</th>
+                                <th class="grid-header">Bank Name</th>
+                                <th class="grid-header">Bank Address</th>
+                                <th class="grid-header">Nearest Landmark</th>
+                                <th class="grid-header">Status</th>
+                                <th class="grid-header"> Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.Inquiry.BankStatementVerifications.OrderBy(x => x.PersonType))
+                            {
+                                <tr>
+                                    <td>@item.PersonType</td>
+                                    <td>@item.PersonName</td>
+                                    <td>@item.PersonContactNo</td>
+                                    <td>@item.BankName</td>
+                                    <td>@item.BankAddress</td>
+                                    <td>@item.NearestLandMark</td>
+                                    <td>@item.Status</td>
+                                    <td width="300px">
+                                        @GetAssignAction(item.BankStatementVerificationId.ToString(), item.Inquiry.InquiryId, item.Inquiry.BranchId, item.InquiryApplicationUser.Where(x => x.VerificationId == item.BankStatementVerificationId).Select(x => x.UserId).ToArray(), item.PersonType, constant.VerificationType.BankStatement, item.Status)
+                                    </td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                        <tfoot></tfoot>
+                    </table>
+
+                </div>
+            </div>
+        }
+
+    </div>
+
+}
+else
+{
+
+    <script type="text/javascript">
+
+        $(function(){
+
+            //disabling users which are already selected..
+            $('.chosen-select option:selected').attr('disabled', 'disabled');
+            $('.disabled').each(function(i, e){
+                e.disabled = true;
+            });
+        });
+
+        //assign button clicked
+        $('.btn-action').click(function (e) {
+
+            var btnAssign = this;
+            e.preventDefault();
+
+            var userSelectList = $(btnAssign).parent('td').find('.chosen-select')[0];//getting select list from user select list.....
+
+            if (userSelectList.value == "") {
+                toastr.warning("Select FIO to assign inquiry.", "Inquiry Assign", { tapToDismiss: true, timeOut: 0, extendedTimeOut: 0 });
+                return false;
+            } else {
+                if ($(userSelectList).find("option:selected").filter(":not([disabled])").length <= 0) {
+                    toastr.warning("Already assigned.", "Inquiry Assign", { tapToDismiss: true, timeOut: 0, extendedTimeOut: 0 });
+                    return false;
+                }
+            }
+
+            var dataToSend = { "inquiryId" : $(btnAssign).attr("inquiryId"),  "id": $(btnAssign).val(), "UserIds": $(userSelectList).val(), "personType" : $(btnAssign).attr("personType") , "verificationType" : $(btnAssign).attr("verificationType")};
+
+            var btnOldStage = btnAssign.innerHTML;
+            btnAssign.disabled = true;
+            btnAssign.innerHTML = '<i class="glyphicon glyphicon-th-large gly-spin"></i>  ';
+
+            $.post('@Url.Action("AssignInquiry","Inquiry")', dataToSend,
+                    function (data, textStatus, jqXHR) {
+
+                        if (data.status > 0 ) {
+                            var isAdmin = (@User.IsInRole(constant.Roles.SuperAdmin).ToString().ToLower() == true || @User.IsInRole(constant.Roles.Head).ToString().ToLower() == true);
+
+                            //To disable option which inquiry assign to inquiry
+                            $(userSelectList).find("option:selected").attr('disabled','disabled');
+                            if (isAdmin)
+                            {
+                                btnAssign.innerHTML = '<i class="glyphicon glyphicon-transfer "></i>';
+                                btnAssign.disabled = false;
+                                $(userSelectList).prop('disabled', false).trigger("chosen:updated"); //for disable
+                            }else {
+                                btnAssign.innerHTML = '<i class="glyphicon glyphicon-ok "></i>';
+                                btnAssign.disabled = true;//for disable
+                                $(userSelectList).prop('disabled', true).trigger("chosen:updated"); //for disable
+                            }
+
+                            toastr.success(data.message, "Inquiry Assign", { tapToDismiss: true, timeOut: 0, extendedTimeOut: 0 });
+
+                        } else {
+                            btnAssign.innerHTML = btnOldStage;
+                            btnAssign.disabled = false;
+                            toastr.info(data.message,"Inquiry Assign", {tapToDismiss:true, timeOut:0, extendedTimeOut :0});
+                        }
+                    }, 'json'
+                );
+
+        });
+
+    </script>
+}

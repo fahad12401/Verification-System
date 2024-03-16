@@ -1,0 +1,683 @@
+﻿@model VerificationSystem.DB.ResidenceVerification
+@using VerificationSystem.Extensions
+@using GridMvc.Html
+@{
+    string isCustomerBuild = System.Configuration.ConfigurationManager.AppSettings["customerBuild"];
+    string imageServer = System.Configuration.ConfigurationManager.AppSettings["imageServer"];
+}
+
+
+
+<div class="box-body">
+    <div id="@(Model.ResidenceVerificationId)tabs-residence-main" style="border-style:none;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <ul>
+                    <li><a href="#@(Model.ResidenceVerificationId)TabResidenceDetail" style="border-bottom-style:inset;">Detail</a></li>
+                    <li><a href="#@(Model.ResidenceVerificationId)TabResidenceStatus" style="border-bottom-style:inset;">Status History</a></li>
+                </ul>
+
+
+
+                <div id="@(Model.ResidenceVerificationId)TabResidenceDetail">
+                    <div class="row">
+
+                        <div id="@(Model.ResidenceVerificationId)tabs-residence-detail" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-6">
+                                @* Residence verification Section start*@
+                                <div class="row">
+                                    <div>
+                                        <h4 class="text-left col-lg-12 col-md-12"><u><strong>Residence Verification</strong></u></h4>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <dl class="dl-horizontal">
+                                            <dt>
+                                                Person Name
+                                            </dt>
+
+                                            <dd>
+                                                @Model.PersonName
+                                            </dd>
+                                            <dt>
+                                                Person CNIC
+                                            </dt>
+
+                                            <dd>
+                                                @Model.PersonCNIC
+                                            </dd>
+                                            <dt>
+                                                Person Contact No
+                                            </dt>
+
+                                            <dd>
+                                                @Model.PersonContactNo
+                                            </dd>
+                                            <dt>
+                                                Residence Address
+                                            </dt>
+
+                                            <dd>
+                                                @Model.ResidenceAddress
+                                            </dd>
+                                            <dt>
+                                                Nearest LandMark
+                                            </dt>
+
+                                            <dd>
+                                                @Model.NearestLandMark
+                                            </dd>
+
+
+                                        </dl>
+                                    </div>
+                                    <br />
+                                </div>
+                                @* Residence verification section end *@
+
+
+
+                                @if (Model.Status == constant.Status.Completed || Model.Status == constant.Status.QualityCheck)
+                                {
+
+                                    @* Residence Detail Section start*@
+                                if (Model.ResidenceDetail != null)
+                                {
+                                    <div class="row">
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Residence Detail</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    Is @Model.PersonType Available
+                                                </dt>
+
+                                                <dd>
+                                                    @Html.ToYesNo(Model.ResidenceDetail.IsApplicantAvailable)
+                                                </dd>
+
+
+                                                @if (!Model.ResidenceDetail.IsApplicantAvailable)
+                                                {
+
+                                                    <dt>
+                                                        Name Of Person To Met
+                                                    </dt>
+                                                    <dd>
+                                                        @Model.ResidenceDetail.NameOfPersonToMet
+                                                    </dd>
+                                                    <dt>
+                                                        Relation With Applicant
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceDetail.RelationWithApplicant
+                                                    </dd>
+                                                }
+
+
+                                                @*@if (!Model.ResidenceDetail.IsApplicantAvailable)
+                                                    {
+
+                                                    <dt>
+                                                        Name Of Person To Met
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceDetail.NameOfPersonToMet
+                                                    </dd>
+                                                    <dt>
+                                                        Relation With Applicant
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceDetail.RelationWithApplicant
+                                                    </dd>
+                                                    }
+                                                    else
+                                                    {
+                                                    if (!(Model.PersonType == constant.PersonType.Reference1 ||
+                                                    Model.PersonType == constant.PersonType.Reference2 ||
+                                                    Model.PersonType == constant.PersonType.Reference3))
+                                                    {
+                                                    <dt>
+                                                        Name Of Person To Met
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.PersonName
+                                                    </dd>
+                                                    }
+
+                                                    }*@
+
+
+
+
+                                                <dt>
+                                                    Was Actual Address Same
+                                                </dt>
+
+                                                <dd>
+                                                    @Html.ToYesNo(Model.ResidenceDetail.WasActualAddressSame)
+                                                </dd>
+
+                                                @if (!Model.ResidenceDetail.WasActualAddressSame)
+                                                {
+                                                    <dt>
+                                                        Correct Address
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceDetail.CorrectAddress
+                                                    </dd>
+                                                }
+
+                                                <dt>
+                                                    Phone No
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceDetail.PhoneNo
+                                                </dd>
+                                                <dt>
+                                                    Lives At Given Address
+                                                </dt>
+
+                                                <dd>
+                                                    @Html.ToYesNo(Model.ResidenceDetail.LivesAtGivenAddress)
+                                                </dd>
+
+                                                @if (!Model.ResidenceDetail.LivesAtGivenAddress)
+                                                {
+                                                    <dt>
+                                                        Permanent Address
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceDetail.PermanentAddress
+                                                    </dd>
+                                                }
+
+
+                                                <dt>
+                                                    Since How Long Living
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceDetail.SinceHowLongLiving
+                                                </dd>
+                                                <dt>
+                                                    CNIC No
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceDetail.CNICNo
+                                                </dd>
+                                                @if (Model.PersonType == constant.PersonType.Reference1 ||
+Model.PersonType == constant.PersonType.Reference2 ||
+Model.PersonType == constant.PersonType.Reference3)
+                                                {
+
+
+                                                    <dt>
+                                                        @Model.PersonType Relation with Applicant
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceDetail.ReferenceRelation
+                                                    </dd>
+                                                    <dt>
+                                                        How long @Model.PersonType knows applicant
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceDetail.SinceHowLongReferenceKnows
+                                                    </dd>
+
+
+                                                }
+
+                                            </dl>
+                                        </div>
+                                        <br />
+                                    </div>
+                                }
+                                @* Residence detail section end *@
+
+                                    @* Residence profile Section start*@
+                                if (Model.ResidenceProfile != null)
+                                {
+                                    <div class="row">
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Residence Profile</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    Type Of Residence
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.TypeOfResidence
+                                                </dd>
+                                                <dt>
+                                                    Applicant Is A
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.ApplicantIsA
+                                                </dd>
+
+
+                                                @if (Model.ResidenceProfile.ApplicantIsA != null && Model.ResidenceProfile.ApplicantIsA.ToLower() == "other")
+                                                {
+                                                    <dt>
+                                                        If Other,Mention Other
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceProfile.MentionOther
+                                                    </dd>
+                                                }
+
+                                                @if (Model.ResidenceProfile.ApplicantIsA != null && Model.ResidenceProfile.ApplicantIsA.ToLower() == "tenant")
+                                                {
+
+                                                    <dt>
+                                                        If Tenant,Mention Rent
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.ResidenceProfile.MentionRent
+                                                    </dd>
+                                                }
+
+
+                                                <dt>
+                                                    Size Approx Area
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.SizeApproxArea
+                                                </dd>
+                                                <dt>
+                                                    Utilization Of Residence
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.UtilizationOfResidence
+                                                </dd>
+                                                <dt>
+                                                    Rent Deed Verified
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.RentDeedVerified
+                                                </dd>
+
+
+
+                                            </dl>
+                                        </div>
+
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Neighbourhood Check</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    Neighborhood
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.Neighborhood
+                                                </dd>
+
+                                                <dt>
+                                                    Area Accessibility
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.AreaAccessibility
+                                                </dd>
+
+
+                                                <dt>
+                                                    Residence Predominantly belong's to
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.ResidentsBelongsTo
+                                                </dd>
+                                                <dt>
+                                                    Is Repossession in the Area
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.ResidenceProfile.RepossessionInTheArea
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                        <br />
+                                    </div>
+                                }
+                                @* Residence profile section end *@
+
+
+                                    @* Neighbour check Section start*@
+                                if (Model.NeighbourCheck != null)
+                                {
+                                    /**/
+                                    <div class="row">
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Neighbour Check One</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    Neighbors Name
+                                                </dt>
+
+                                                <dd>
+                                                    @if (Model.NeighbourCheck.NeighborsName != null)
+                                                    {
+                                                        @Model.NeighbourCheck.NeighborsName
+                                                    }
+                                                    else
+                                                    {
+                                                        <text> Not Applicable </text>
+                                                    }
+                                                </dd>
+                                                <dt>
+                                                    Neighbors Address
+                                                </dt>
+
+                                                <dd>
+                                                    @if (Model.NeighbourCheck.NeighborsAddress != null)
+                                                    {
+                                                        @Model.NeighbourCheck.NeighborsAddress
+                                                    }
+                                                    else
+                                                    {
+                                                        <text> Not Applicable </text>
+                                                    }
+
+                                                </dd>
+                                                <dt>
+                                                    Knows Applicant
+                                                </dt>
+                                                <dd>
+
+                                                    @if (Model.NeighbourCheck.KnowsApplicant)
+                                                    {
+                                                        <text> Yes </text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text> No </text>
+                                                    }
+
+
+                                                </dd>
+
+
+
+                                                @if (Model.NeighbourCheck.KnowsApplicant)
+                                                {
+                                                    <dt>
+                                                        Knows How Long
+                                                    </dt>
+                                                    <dd>
+                                                        @if (Model.NeighbourCheck.KnowsHowLong != null)
+                                                        {
+                                                            @Model.NeighbourCheck.KnowsHowLong
+                                                        }
+                                                        else
+                                                        {
+                                                            <text> Not Applicable </text>
+                                                        }
+
+                                                    </dd>
+                                                }
+
+
+
+                                                <dt>
+                                                    Neighbor Comments
+                                                </dt>
+
+                                                <dd>
+                                                    @if (Model.NeighbourCheck.NeighborComments != null)
+                                                    {
+                                                        @Model.NeighbourCheck.NeighborComments
+                                                    }
+                                                    else
+                                                    {
+                                                        <text> Not Applicable </text>
+                                                    }
+                                                </dd>
+
+                                            </dl>
+                                        </div>
+                                        <br />
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Neighbour Check Two</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    Neighbors Name
+                                                </dt>
+
+                                                <dd>
+                                                    @if (Model.NeighbourCheck.NeighborsName2 != null)
+                                                    {
+                                                        @Model.NeighbourCheck.NeighborsName2
+                                                    }
+                                                    else
+                                                    {
+                                                        <text> Not Applicable </text>
+                                                    }
+                                                </dd>
+                                                <dt>
+                                                    Neighbors Address
+                                                </dt>
+
+                                                <dd>
+                                                    @if (Model.NeighbourCheck.NeighborsAddress2 != null)
+                                                    {
+                                                        @Model.NeighbourCheck.NeighborsAddress2
+                                                    }
+                                                    else
+                                                    {
+                                                        <text> Not Applicable </text>
+                                                    }
+
+                                                </dd>
+                                                <dt>
+                                                    Knows Applicant
+                                                </dt>
+                                                <dd>
+
+                                                    @if (Model.NeighbourCheck.KnowsApplicant2)
+                                                    {
+                                                        <text> Yes </text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text> No </text>
+                                                    }
+
+
+                                                </dd>
+
+
+
+                                                @if (Model.NeighbourCheck.KnowsApplicant2)
+                                                {
+                                                    <dt>
+                                                        Knows How Long
+                                                    </dt>
+                                                    <dd>
+                                                        @if (Model.NeighbourCheck.KnowsHowLong2 != null)
+                                                        {
+                                                            @Model.NeighbourCheck.KnowsHowLong2
+                                                        }
+                                                        else
+                                                        {
+                                                            <text> Not Applicable </text>
+                                                        }
+
+                                                    </dd>
+                                                }
+
+
+
+                                                <dt>
+                                                    Neighbor Comments
+                                                </dt>
+
+                                                <dd>
+                                                    @if (Model.NeighbourCheck.NeighborComments2 != null)
+                                                    {
+                                                        @Model.NeighbourCheck.NeighborComments2
+                                                    }
+                                                    else
+                                                    {
+                                                        <text> Not Applicable </text>
+                                                    }
+                                                </dd>
+
+                                            </dl>
+                                        </div>
+                                        <br />
+
+                                    </div>
+
+                                }
+                                @* Neighbour check section end *@
+
+
+                                    @* General Comments & Outcome of Verification *@
+                                    <div class="row">
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Comments & Outcome of Verification</strong></u></h4>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+
+                                                <dt>General Comments</dt>
+                                                <dd> @Model.GeneralComments </dd>
+
+                                                <dt>Outcome of Verification</dt>
+                                                <dd>  @Model.OutComeVerification </dd>
+
+                                                <dt>Gps Location</dt>
+                                                <dd> @Model.GpsLocation </dd>
+
+                                                <dt>GPS URL</dt>
+                                                <dd>
+                                                    <a href="@Model.GpsURL" class="btn btn-primary" title="Physical Location" style="color:white" target="_blank"><i style="margin-right: 0.7em; color: white;" class="glyphicon glyphicon-map-marker"></i>Show on Map</a>
+                                                </dd>
+
+                                                <dt>Status</dt>
+                                                <dd>  @Model.Status </dd>
+
+                                                <dt>Status Date</dt>
+                                                <dd> @Model.StatusDate.ToString("dd-MM-yyyy")</dd>
+
+                                                <dt>Verfied By</dt>
+                                                <dd> @Model.VerifiedBy </dd>
+
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    @*  General Comments & Outcome of Verification  end*@
+
+
+                                }
+                            </div>
+
+
+
+                            <div class="col-md-6">
+                                @if (Model.Status == constant.Status.Completed || Model.Status == constant.Status.QualityCheck)
+                                {
+                                    if (Model.Images.Count > 0)
+                                    {
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Verification Images</strong></u></h4>
+                                        </div>
+
+                                        foreach (var item in Model.Images)
+                                        {
+
+                                             if (!string.IsNullOrEmpty(imageServer))
+                                            {
+                                                 <div class="col-xs-6 col-sm-5 col-lg- col-md-5">
+                                                   <!-- <img id="img1" class="thumbnail img-responsive myimage" title="@item.PersonType" onclick="ImageOnClick(this);" src="@Html.GetImageInBase64Server(item.ImagePath)" alt="Image" /> -->
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-6 col-sm-5 col-lg- col-md-5">
+                                                 <!--   <img id="img1" class="thumbnail img-responsive myimage" title="@item.PersonType" onclick="ImageOnClick(this);" src="@Html.GetImageInBase64(item.ImagePath)" alt="Image" /> -->
+                                                </div>
+                                            }
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <h3 class="text-center HeadingStyle col-lg-12 col-md-12 " style="color:orangered">No Verification Images Found</h3>
+                                    }
+
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="@(Model.ResidenceVerificationId)TabResidenceStatus">
+
+                    <div class="row">
+                        <div id="@(Model.ResidenceVerificationId)tabs-residence-status" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow:auto;">
+                                    @*<div class="well well-sm" style="background-color:#337ab7; color:white; overflow:hidden;">
+                                            <h3 class="text-left col-lg-12 col-md-12">Status History</h3>
+                                        </div>*@
+
+                                    @Html.Grid(Model.Statuses).Named("Statuses").Columns(c =>
+                               {
+                                   c.Add(x => x.ApplicationUsers.UserName).Titled("Username");
+                                   //c.Add(x => x.PersonType).Titled("PersonType");
+                                   //c.Add(x => x.VerificationType).Titled("VerificationType");
+
+                                   c.Add(x => x.StatusMessage).Titled("StatusMessage");
+                                   c.Add(x => x.Descriptions).Titled("Descriptions");
+
+                                   c.Add(x => x.StatusDate).Titled("Status Date").Format("{0:dd-MM-yyyy hh:mm tt}");
+
+
+                               })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

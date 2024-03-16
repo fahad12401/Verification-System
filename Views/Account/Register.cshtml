@@ -1,0 +1,335 @@
+﻿@model VerificationSystem.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3><strong> Register New User</strong></h3>
+
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+
+                <div class="box-body">
+
+
+                    @*@Html.ValidationSummary("", new { @class = "text-danger" })*@
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.FirstName)
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter First Name..." })
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.LastName)
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter Last Name..." })
+                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email)
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter Email..." })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.UserName)
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Enter UserName..." })
+                                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password)
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter Password..." })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ConfirmPassword)
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password..." })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                @Html.LabelFor(m => m.BranchId)
+                                @Html.DropDownListFor(x => x.BranchId, ViewBag.Branches as SelectList, "", new { @class = "form-control chosen-branch  ", data_placeholder = "Select a  Branch" })
+                                @Html.ValidationMessageFor(m => m.BranchId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Roles)
+                                @Html.DropDownListFor(x => x.Roles, ViewBag.Roles as MultiSelectList, "", new { @class = "form-control chosen-role", data_placeholder = "Select a Role", multiple = "multiple" })
+                                @Html.ValidationMessageFor(m => m.Roles, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group condition-div customer hidden ">
+                                @Html.LabelFor(m => m.CompanyId)
+                                @Html.DropDownListFor(x => x.CompanyId, ViewBag.Companies as SelectList, "", new { @class = "form-control chosen-company  ", data_placeholder = "Select a Comapny" })
+                                @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group condition-div customer hidden">
+                                @Html.LabelFor(m => m.CustomerBranchId)
+
+                                <select id="CustomerBranchId" name="CustomerBranchId" class="form-control chosen-branch  " data_placeholder="Select a Customer Branch"></select>
+                                @*@Html.DropDownListFor(x => x.CustomerBranchId, , "", new { @class = "form-control chosen-branch  ", data_placeholder = "Select a Customer Branch" })*@
+                                @Html.ValidationMessageFor(m => m.CustomerBranchId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group condition-div customer hidden ">
+                                @Html.LabelFor(m => m.ParentCode)
+                                <select id="ParentCode" name="ParentCode" class="form-control chosen-branch  " data_placeholder="Select Head Customer Branch"></select>
+                                @*@Html.DropDownListFor(x => x.CustomerBranchId, , "", new { @class = "form-control chosen-branch  ", data_placeholder = "Select a Customer Branch" })*@
+                                @Html.ValidationMessageFor(m => m.ParentCode, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Address)
+
+                                @Html.TextAreaFor(m => m.Address, new { @class = "form-control", placeholder = "Enter Address..." })
+                                @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(m => m.IsActive)@Html.LabelFor(m => m.IsActive, "Is Active ?", new { style = "font-weight:bold;" })
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+                    <br />
+                    <div class="box-footer">
+                        <div class="row">
+                           
+                                <div class="col-md-4">
+                                    <input type="submit" class="btn btn-primary col-md-12" value="Register User" />
+                                </div>
+                           
+                        </div>
+
+
+                    </div>
+
+
+
+            }
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+@section    Styles{
+    @Styles.Render("~/Content/chosen")
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/chosen")
+
+    <script type="text/javascript">
+        $('input[type=text]').tooltip(
+                 {
+                     placement: "right",
+                     trigger: "focus"
+                 }
+            );
+        //setting for role required. when we use chosen
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-role)" });
+
+
+
+
+        $(".chosen-role").chosen({ allow_single_deselect: true });
+
+        //For Enable Disable Multiple Roles
+        $('#Roles').change(function () {
+            var selected = [];
+            if (this.value == "") {
+                $('.condition-div').addClass('hidden'); // hide all the conidional divs
+                $('#CompanyId').val('');
+                $('#CustomerBranchId').val('');
+                //enable all roles
+
+                $(".chosen-role").chosen({ allow_single_deselect: true });
+
+                //$(this).trigger("chosen:updated");
+                $("#Roles option").filter(function () {
+                    $(this).prop("disabled", false).trigger("chosen:updated");
+                });
+            }
+            else {
+                $('#Roles :selected').each(function () {
+                    var roles = selected[$(this).val()] = $(this).text();
+                    @*|| roles == '@constant.Roles.CBranchHead'*@
+
+                    if (roles == '@constant.Roles.Fio' || roles == '@constant.Roles.Head') {
+                        $('#CompanyId').val('');
+                        $('#CustomerBranchId').val('');
+                        $('.condition-div.customer').addClass('hidden'); /// hide user role conditional divs
+                        //  $('.condition-div.admin').removeClass('hidden'); // show admin role conditional divs
+                        // $(".chosen-branch").chosen({ allow_single_deselect: true });
+
+
+                        // disable all customer option
+                        // update chosen
+                        $("#Roles option").filter(function () {
+                            var name = $(this).text();
+                            @*|| name == '@constant.Roles.CBranchHead'*@
+                            if (name == '@constant.Roles.Fio' || name == '@constant.Roles.Head') {
+                                $(this).prop("disabled", true).trigger("chosen:updated");
+                                // alert(name);
+                            }
+                        });
+
+                        $(".chosen-role").chosen({ allow_single_deselect: true });
+                        $.validator.setDefaults();
+
+                    }
+
+                });
+            }
+        });
+
+          // For Single Role Select
+             $('#Roles').change(function () {
+
+            if (this.value == "") {
+                $('.condition-div').addClass('hidden'); // hide all the conidional divs
+                $('#CompanyId').val('');
+                $('#CustomerBranchId').val('');
+                //enable all roles
+
+                $(".chosen-role").chosen({ allow_single_deselect: true });
+
+            }
+            else if (this.value == '@constant.Roles.Head'  {
+                // disable all
+
+                //$('.condition-div.admin').addClass('hidden'); /// hide admin conditional divs
+                $('.condition-div.customer').removeClass('hidden'); // show user role conditioanl div
+             //   $(".chosen-customers").chosen({ allow_single_deselect: true, search_contains: true });
+                // $.validator.setDefaults({ ignore: ":hidden:not(.chosen-customers)" });
+
+                $(".chosen-role").chosen({ allow_single_deselect: true });
+            }
+                 else 
+                if (this.value == '@constant.Roles.Fio' || this.value == '@constant.Roles.Head') {
+
+                $('#CompanyId').val('');
+                $('#CustomerBranchId').val('');
+                $('.condition-div.customer').addClass('hidden'); /// hide user role conditional divs
+              //  $('.condition-div.admin').removeClass('hidden'); // show admin role conditional divs
+                // $(".chosen-branch").chosen({ allow_single_deselect: true });
+
+
+                // disable all customer option
+                // update chosen
+
+                $(".chosen-role").chosen({ allow_single_deselect: true });
+                $.validator.setDefaults();
+            }
+        });
+
+        $("#CompanyId").change(function () {
+            $.get('@Url.Action("GetBranchesByCompany", "CustomerBranch")', { companyId: this.value },
+                function (data) {
+                    if (data.status) {
+                        fillBranches(data.branches);
+                    }
+                    else {
+                        this.value = '';
+                        $('#CustomerBranchId').empty();
+                        $('#ParentCode').empty();
+
+                    }
+                });
+        });
+
+        function fillBranches(list) {
+            $('#CustomerBranchId').empty();
+            $('#ParentCode').empty();
+
+            var options = '';
+            for (var i = 0; i < list.length; i++) {
+                options += '<option value="' + list[i].CustomerBranchId + '">' + list[i].Name + '</option>   ';
+            }
+            $('#CustomerBranchId').append(options);
+            $('#ParentCode').append(options);
+
+        }
+
+
+        @if (Model !=  null)
+        {
+        <text>
+        $(function () {
+            $('#CompanyId').change();
+            $('#CustomerBranchId').delay(1500).val('@Model.CustomerBranchId');
+        });
+        </text>
+        }
+
+       
+    </script>
+}

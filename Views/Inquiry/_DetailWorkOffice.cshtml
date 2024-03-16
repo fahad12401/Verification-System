@@ -1,0 +1,758 @@
+﻿@model VerificationSystem.DB.WorkOfficeVerification
+@using VerificationSystem.Extensions
+@using GridMvc.Html
+
+@{
+    string isCustomerBuild = System.Configuration.ConfigurationManager.AppSettings["customerBuild"];
+    string imageServer = System.Configuration.ConfigurationManager.AppSettings["imageServer"];
+}
+
+
+
+<div class="box-body">
+    <div id="@(Model.WorkOfficeVerificationId)tabs-workoffice-main" style="border-style:none;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <ul>
+                    <li><a href="#@(Model.WorkOfficeVerificationId)TabWorkOfficeDetail" style="border-bottom-style:inset;">Detail</a></li>
+                    @if (Model.PersonType == constant.PersonType.Applicant)
+                    {
+                        <li><a href="#@(Model.WorkOfficeVerificationId)TabWorkOfficeAddress" style="border-bottom-style:inset;">Address</a></li>
+
+                    }
+                    <li><a href="#@(Model.WorkOfficeVerificationId)TabWorkOfficeStatus" style="border-bottom-style:inset;">Status History</a></li>
+                </ul>
+                <div id="@(Model.WorkOfficeVerificationId)TabWorkOfficeDetail">
+
+                    <div class="row">
+
+                        <div id="@(Model.WorkOfficeVerificationId)tabs-workoffice-detail" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-6">
+                                @*@PersonTypeIdForOfficeTab*@
+
+
+                                @* Work/Office verification Section start*@
+                                <div class="row">
+
+                                    <div>
+                                        <h4 class="text-left col-lg-12 col-md-12"><u><strong>Work/Office Verification</strong></u></h4>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <dl class="dl-horizontal">
+
+                                            <dt>
+                                                Person Name
+                                            </dt>
+
+                                            <dd>
+                                                @Model.PersonName
+                                            </dd>
+
+                                            <dt>
+                                                PersonContactNo
+                                            </dt>
+
+                                            <dd>
+                                                @Model.PersonContactNo
+                                            </dd>
+                                            <dt>
+                                                PersonDesignation
+                                            </dt>
+
+                                            <dd>
+                                                @Model.PersonDesignation
+                                            </dd>
+                                            <dt>
+                                                OfficeName
+                                            </dt>
+
+                                            <dd>
+                                                @Model.OfficeName
+                                            </dd>
+                                            <dt>
+                                                Office Address
+                                            </dt>
+
+                                            <dd>
+                                                @Model.OfficeAddress
+                                            </dd>
+                                            <dt>
+                                                Nearest LandMark
+                                            </dt>
+
+                                            <dd>
+                                                @Model.NearestLandMark
+                                            </dd>
+
+
+                                        </dl>
+                                    </div>
+                                    <br />
+                                </div>
+                                @* Work/Office verification section end *@
+
+
+
+                                @if (Model.Status == constant.Status.Completed || Model.Status == constant.Status.QualityCheck)
+                                {
+                                    if (Model.OfficeAddressDetail != null)
+                                    {
+                                        @* Work/Office Address Detail Section start*@
+                                        <div class="row">
+
+                                            <div>
+                                                <h4 class="text-left col-lg-12 col-md-12"><u><strong>Work/Office Address Detail</strong></u></h4>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <dl class="dl-horizontal">
+                                                    <dt>
+                                                        Was Actual Address Same
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Html.ToYesNo(Model.OfficeAddressDetail.WasActualAddressSame)
+                                                    </dd>
+
+                                                    @if (!Model.OfficeAddressDetail.WasActualAddressSame)
+                                                    {
+                                                        <dt>
+                                                            Correct Address
+                                                        </dt>
+
+                                                                        <dd>
+                                                                            @Model.OfficeAddressDetail.CorrectAddress
+                                                                        </dd>
+                                                    }
+
+                                                    <dt>
+                                                        Established Time
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.OfficeAddressDetail.EstablishedTime
+                                                    </dd>
+
+
+                                                    <dt>
+                                                        Work At Given Address
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Html.ToYesNo(Model.OfficeAddressDetail.WorkAtGivenAddress)
+                                                    </dd>
+
+                                                    @if (!Model.OfficeAddressDetail.WorkAtGivenAddress)
+                                                    {
+                                                        <dt>
+                                                            Give New Address
+                                                        </dt>
+
+                                                                        <dd>
+                                                                            @Model.OfficeAddressDetail.GiveNewAddress
+                                                                        </dd>
+                                                    }
+
+
+                                                    <dt>
+                                                        Is Applicant Available
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Html.ToYesNo(Model.OfficeAddressDetail.IsApplicantAvailable)
+                                                    </dd>
+
+                                                    @if (!Model.OfficeAddressDetail.IsApplicantAvailable)
+                                                    {
+                                                        <dt>
+                                                            Give Reason
+                                                        </dt>
+
+                                                                        <dd>
+                                                                            @Model.OfficeAddressDetail.GiveReason
+                                                                        </dd>
+                                                                        <dt>
+                                                                            Met Person Name
+                                                                        </dt>
+
+                                                                        <dd>
+                                                                            @Model.OfficeAddressDetail.MetPersonName
+                                                                        </dd>
+                                                                        <dt>
+                                                                            Met Person CNIC
+                                                                        </dt>
+                                                                        <dd>
+                                                                            @Model.OfficeAddressDetail.MetPersonCNIC
+                                                                        </dd>
+                                                    }
+
+                                                    <dt>
+                                                        CNICOS
+                                                    </dt>
+
+                                                    <dd>
+                                                        @*@Html.ToYesNo(Convert.ToBoolean( Model.OfficeAddressDetail.CNICOS))*@
+                                                        @Model.OfficeAddressDetail.CNICOS
+                                                    </dd>
+                                                    <dt>
+                                                        CNICNo
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.OfficeAddressDetail.CNICNo
+                                                    </dd>
+
+
+                                                </dl>
+                                            </div>
+                                            <br />
+                                        </div>
+                                            @* Work/Office Address Detail Section end*@
+                                    }
+                                    @* BusinessWorkOffice Detail Section start*@
+
+                                if (Model.BusinessWorkOfficeDetail != null)
+                                {
+
+                                    <div class="row">
+
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Business Work Office Detail</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    TypeOfBusiness
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.TypeOfBusiness
+                                                </dd>
+
+                                                @if (Model.BusinessWorkOfficeDetail.TypeOfBusiness?.ToLower() == "other")
+                    {
+                                                    <dt>
+                                                        Other Type Of Business
+                                                    </dt>
+
+                                                        <dd>
+                                                            @Model.BusinessWorkOfficeDetail.OtherTypeOfBusiness
+                                                        </dd>
+                                                }
+
+
+                                                <dt>
+                                                    Applicant Is A
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.ApplicantIsA
+                                                </dd>
+
+                                                @if (Model.BusinessWorkOfficeDetail.ApplicantIsA.ToLower() == "tenant")
+                                                {
+                                                    <dt>
+                                                        Mention Rent
+                                                    </dt>
+
+                                                        <dd>
+                                                            @Model.BusinessWorkOfficeDetail.MentionRent
+                                                        </dd>
+                                                }
+                                                else if (Model.BusinessWorkOfficeDetail.ApplicantIsA.ToLower() == "other")
+                                                {
+                                                    <dt>
+                                                        Mention Other
+                                                    </dt>
+
+                                                        <dd>
+                                                            @Model.BusinessWorkOfficeDetail.MentionOther
+                                                        </dd>
+
+                                                }
+
+
+
+
+                                                <dt>
+                                                    NatureOfBusiness
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.NatureOfBusiness
+                                                </dd>
+
+
+                                                @if (Model.BusinessWorkOfficeDetail.NatureOfBusiness.ToLower() == "other")
+                    {
+                                                    <dt>
+                                                        Other Nature Of Business
+                                                    </dt>
+
+                                                        <dd>
+                                                            @Model.BusinessWorkOfficeDetail.OtherNatureOfBusiness
+                                                        </dd>
+                                                }
+
+                                                <dt>
+                                                    Business Legal Entity
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.BusinessLegalEntity
+                                                </dd>
+
+                                                @if (Model.BusinessWorkOfficeDetail.BusinessLegalEntity != null && Model.BusinessWorkOfficeDetail.BusinessLegalEntity.ToLower().Contains("govt"))
+                                                {
+                                                    <dt>
+                                                        Govt Emp Business Legal Entity
+                                                    </dt>
+
+                                                                <dd>
+                                                                    @Model.BusinessWorkOfficeDetail.GovtEmpBusinessLegalEntity
+                                                                </dd>
+                                                }
+
+
+                                                <dt>
+                                                    Name Plate Affixed
+                                                </dt>
+
+                                                <dd>
+                                                    @Html.ToYesNo(Model.BusinessWorkOfficeDetail.NamePlateAffixed)
+                                                </dd>
+
+
+                                                <dt>
+                                                    Size Approx Area
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.SizeApproxArea
+                                                </dd>
+                                                <dt>
+                                                    Business Activity
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.BusinessActivity
+                                                </dd>
+                                                <dt>
+                                                    No Of Employees
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.NoOfEmployees
+                                                </dd>
+                                                <dt>
+                                                    Business Estables Since
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.BusinessEstablesSince
+                                                </dd>
+
+                                                <dt>
+                                                    Line Of Business
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.BusinessWorkOfficeDetail.LineOfBusiness
+                                                </dd>
+
+
+
+                                            </dl>
+                                        </div>
+                                        <br />
+                                    </div>
+                                }
+                                @*  BusinessWorkOffice Detail Section end*@
+
+
+                                    @* MarketeCheck Detail Section start*@
+
+                                if (Model.MarketeCheck != null)
+                                {
+                                    <div class="row">
+
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Market Check One Detail</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    Neighbors Name
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.MarketeCheck.NeighborsName
+                                                </dd>
+                                                <dt>
+                                                    Neighbors Address
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.MarketeCheck.NeighborsAddress
+                                                </dd>
+                                                <dt>
+                                                    KnowsApplicant
+                                                </dt>
+
+                                                <dd>
+                                                    @Html.ToYesNo(Model.MarketeCheck.KnowsApplicant)
+                                                </dd>
+
+
+                                                @if (Model.MarketeCheck.KnowsApplicant)
+                                                {
+                                                    <dt>
+                                                        Knows How Long
+                                                    </dt>
+
+                                                        <dd>
+                                                            @Model.MarketeCheck.KnowsHowLong
+                                                        </dd>
+                                                }
+
+
+
+                                                <dt>
+                                                    Neighbor Comments
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.MarketeCheck.NeighborComments
+                                                </dd>
+                                                <dt>
+                                                    Business Established Since MarketeCheck
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.MarketeCheck.BusinessEstablishedSinceMarketeCheck
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Market Check Two Detail</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    Neighbors Name
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.MarketeCheck.NeighborsTwoName
+                                                </dd>
+                                                <dt>
+                                                    Neighbors Address
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.MarketeCheck.NeighborsTwoAddress
+                                                </dd>
+                                                <dt>
+                                                    KnowsApplicant
+                                                </dt>
+
+                                                <dd>
+                                                    @Html.ToYesNo(Model.MarketeCheck.NeighborsTwoKnowsApplicant)
+                                                </dd>
+
+
+                                                @if (Model.MarketeCheck.NeighborsTwoKnowsApplicant)
+                                                {
+                                                    <dt>
+                                                        Knows How Long
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Model.MarketeCheck.NeighborsTwoKnowsHowLong
+                                                    </dd>
+                                                }
+
+
+
+                                                <dt>
+                                                    Neighbor Comments
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.MarketeCheck.NeighborsTwoNeighborComments
+                                                </dd>
+                                                <dt>
+                                                    Business Established Since MarketeCheck
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.MarketeCheck.NeighborsTwoBusinessEstablishedSinceMarketeCheck
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                }
+                                @*  MarketeCheck Detail Section end*@
+
+                                    @* Office HR Detail Section start*@
+                                if (Model.OfficeHRDetail != null)
+                                {
+                                    <div class="row">
+
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Office HR Detail</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+                                                <dt>
+                                                    NameOfPersonToMeet
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.OfficeHRDetail.NameOfPersonToMeet
+                                                </dd>
+                                                <dt>
+                                                    OHr Knows Applicant
+                                                </dt>
+
+                                                <dd>
+                                                    @Html.ToYesNo(Model.OfficeHRDetail.OHrKnowsApplicant)
+                                                </dd>
+                                                <dt>
+                                                    Applicant Employement Status
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.OfficeHRDetail.ApplicantEmployementStatus
+                                                </dd>
+                                                <dt>
+                                                    Applicant Employement Period
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.OfficeHRDetail.ApplicantEmployementPeriod
+                                                </dd>
+                                                <dt>
+                                                    Applicant Designation
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.OfficeHRDetail.ApplicantDesignation
+                                                </dd>
+                                                <dt>
+                                                    Nature Of Business
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.OfficeHRDetail.OHrNatureOfBusiness
+                                                </dd>
+
+                                                @if (Model.OfficeHRDetail != null && Model.OfficeHRDetail.OHrNatureOfBusiness != null && Model.OfficeHRDetail.OHrNatureOfBusiness.ToLower().Contains("other"))
+                                                {
+                                                    <dt>
+                                                        Other Nature Of Business
+                                                    </dt>
+
+                                                        <dd>
+                                                            @Model.OfficeHRDetail.OHrOtherNatureOfBusiness
+                                                        </dd>
+                                                }
+
+
+
+
+
+
+
+                                                <dt>
+                                                    Gross Salary
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.OfficeHRDetail.GrossSalary
+                                                </dd>
+                                                <dt>
+                                                    Net Take Home Salary
+                                                </dt>
+
+                                                <dd>
+                                                    @Model.OfficeHRDetail.NetTakeHomeSalary
+                                                </dd>
+                                                <dt>
+                                                    SalarySlipVerified
+                                                </dt>
+
+                                                <dd>
+                                                    @Html.ToYesNo(Model.OfficeHRDetail.SalarySlipVerified)
+                                                </dd>
+                                                @*<dt>
+                                                        OHrBankStatmentVerified
+                                                    </dt>
+
+                                                    <dd>
+                                                        @Html.ToYesNo(Model.OfficeHRDetail.OHrBankStatmentVerified)
+                                                    </dd>*@
+                                            </dl>
+                                        </div>
+                                        <br />
+                                    </div>
+                                }
+                                @*  Office HR Detail Section end*@
+
+
+
+                                    @* General Comments & Outcome of Verification *@
+                                    <div class="row">
+
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Comments & Outcome of Verification</strong></u></h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <dl class="dl-horizontal">
+
+                                                <dt>General Comments</dt>
+                                                <dd> @Model.GeneralComments </dd>
+
+                                                <dt>Outcome of Verification</dt>
+                                                <dd>  @Model.OutComeVerification </dd>
+
+                                                <dt>Gps Location</dt>
+                                                <dd> @Model.GpsLocation </dd>
+
+                                                <dt>GPS URL</dt>
+                                                <dd>
+                                                    <a href="@Model.GpsURL" title="Physical Location" class="btn btn-primary" style="color:white" target="_blank"><i style="margin-right: 0.7em; color: white;" class="glyphicon glyphicon-map-marker"></i>Show on Map</a>
+                                                </dd>
+
+                                                <dt>Status</dt>
+                                                <dd>  @Model.Status </dd>
+
+                                                <dt>Status Date</dt>
+                                                <dd> @Model.StatusDate.ToString("dd-MM-yyyy")</dd>
+
+                                                <dt>Verfied By</dt>
+                                                <dd> @Model.VerifiedBy </dd>
+
+                                            </dl>
+                                        </div>
+                                    </div>
+
+
+                                    @*  General Comments & Outcome of Verification  end*@
+                                }
+                            </div> @* Tab Main columns *@
+
+
+                            <div class="col-md-6">
+                                @if (Model.Status == constant.Status.Completed || Model.Status == constant.Status.QualityCheck)
+                                {
+                                    if (Model.Images.Count > 0)
+                                    {
+
+                                        <div>
+                                            <h4 class="text-left col-lg-12 col-md-12"><u><strong>Verification Images</strong></u></h4>
+                                        </div>
+                                        foreach (var item in Model.Images)
+                                        {
+
+                                            if (!string.IsNullOrEmpty(imageServer))
+                                            {
+                                                <div class="col-xs-6 col-sm-5 col-lg- col-md-5">
+                                                  <!--  <img id="img1" class="thumbnail img-responsive myimage" title="@item.PersonType" onclick="ImageOnClick(this);" src="@Html.GetImageInBase64Server(item.ImagePath)" alt="Image" /> -->
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-6 col-sm-5 col-lg- col-md-5">
+                                                   <!-- <img id="img1" class="thumbnail img-responsive myimage" title="@item.PersonType" onclick="ImageOnClick(this);" src="@Html.GetImageInBase64(item.ImagePath)" alt="Image" /> -->
+                                                </div>
+                                            }
+
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <h3 class="text-center HeadingStyle col-lg-12 col-md-12 " style="color:orangered">No Verification Images Found</h3>
+                                    }
+                                }
+                            </div>
+
+                        </div> @* Tab Main row *@
+
+
+                    </div>
+
+                </div>
+
+
+
+                @* Status *@
+                <div id="@(Model.WorkOfficeVerificationId)TabWorkOfficeStatus">
+                    <div class="row">
+                        <div id="@(Model.WorkOfficeVerificationId)tabs-workoffice-status" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="row">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow:auto;">
+                                    @*<div class="well well-sm" style="background-color:#337ab7; color:white; overflow:hidden;">
+                                            <h3 class="text-left col-lg-12 col-md-12">Status History</h3>
+                                        </div>*@
+
+
+                                    @Html.Grid(Model.Statuses).Named("Statuses").Columns(c =>
+                           {
+                               c.Add(x => x.ApplicationUsers.UserName).Titled("Username");
+                               //c.Add(x => x.PersonType).Titled("PersonType");
+                               //c.Add(x => x.VerificationType).Titled("VerificationType");
+
+                               c.Add(x => x.StatusMessage).Titled("StatusMessage");
+                               c.Add(x => x.Descriptions).Titled("Descriptions");
+
+                               c.Add(x => x.StatusDate).Titled("Status Date").Format("{0:dd-MM-yyyy hh:mm tt}");
+
+
+                           })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.PersonType == constant.PersonType.Applicant)
+                {
+                    <div id="@(Model.WorkOfficeVerificationId)TabWorkOfficeAddress">
+                        <div class="row">
+                            @if (Model.Address == null)
+                            {
+                                @Html.Partial("_Address", new VerificationSystem.DB.Address() { VerificationType = constant.VerificationType.WorkOffice, PersonType = Model.PersonType, InquiryId = Model.InquiryId })
+                            }
+                            else
+                            {
+                                @Html.Partial("_Address", Model.Address)
+                            }
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+

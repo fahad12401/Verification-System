@@ -1,0 +1,381 @@
+﻿@model VerificationSystem.Models.TenantCreateVM
+@{
+    bool renderScript = (bool)ViewData["ScriptSection"];
+
+}
+
+@if (renderScript == false)
+{
+    <div>
+        <table class="hidden text-left table table-striped" id="tenantTable">
+            <thead>
+                <tr>
+                    <th>
+                        Person Type
+                    </th>
+                    <th>
+                        Person Name
+                    </th>
+                    <th>
+                        Person Contact #
+                    </th>
+                    <th>
+                        Tenant Address
+                    </th>
+                    <th>
+                        Nearest Landmark
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TenantVerifications)
+                {
+                    <tr id="@item.TenantVerificationId">
+                        <td class="hidden">
+                            <label id="TenantVerificationId">@item.TenantVerificationId </label>
+                            <label id="OldPersonType">@item.PersonType</label>
+                        </td>
+                        <td id="PersonType">@item.PersonType</td>
+                        <td id="PersonName">@item.PersonName</td>
+                        <td id="PersonContactNo">@item.PersonContactNo</td>
+
+                        <td id="TenantAddress"> @item.TenantAddress</td>
+                        <td id="NearestLandMark"> @item.NearestLandMark</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" value="@item.TenantVerificationId" id="TenantEdit" onclick="TEdit(this);"> <span class="glyphicon glyphicon-edit">&nbsp</span> Edit </button>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h4>Create / Update Tenant Verifications</h4>
+
+                </div>
+                <div class="box-body">
+                    @using (Html.BeginForm("CreateTenant", "Inquiry", FormMethod.Post, new { name = "TenantForm", id = "TenantForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                @Html.HiddenFor(x => x.TenantVerificationId)
+                                @Html.HiddenFor(x => x.OldPersonType)
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonType, new { @class = " control-label" })
+
+                                            @Html.DropDownListFor(x => x.PersonType, Model.PersonTypeList, "", new { @class = " form-control chosen-branch  ", data_placeholder = "Select a Person " })
+
+                                            @Html.ValidationMessageFor(m => m.PersonType, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonName, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.PersonName, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.PersonName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.PersonContactNo, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.PersonContactNo, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.PersonContactNo, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.TenantAddress, new { @class = " control-label" })
+
+
+                                            @Html.TextBoxFor(m => m.TenantAddress, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.TenantAddress, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.NearestLandMark, new { @class = " control-label" })
+                                            @Html.TextBoxFor(m => m.NearestLandMark, new { @class = "form-control" })
+
+
+                                            @Html.ValidationMessageFor(m => m.NearestLandMark, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="col-md-4">
+                                    <br />
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+
+                                            <input type="button" class="btn btn-primary btn-block" value="Save" id="CreateTenant">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+
+                                            <input type="button" class="btn btn-warning btn-block" value="Reset" id="TenantReset" onclick="TReset();">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+else
+{
+
+
+    <script type="text/javascript">
+
+
+        //====================================//
+
+        $("#TenantForm #PersonType").change(function () {
+
+            var residenceTableRowsLength = $('#residenceTable tr').length;
+            var bankStatementRowsTable = $('#bankStatementTable tr').length;
+            var salarySlipRowsTable = $('#salarySlipTable tr').length;
+            var tenantRowsTable = $('#tenantTable tr').length;
+            var workOfficeRowsTable = $('#workOfficeTable tr').length;
+
+            var personType = $("#TenantForm #PersonType option:selected").val();
+            if (personType == '@constant.PersonType.Applicant') {
+                var AppName = $('#InquiryForm #AppName').val();
+                var AppContact = $('#InquiryForm #AppContact').val();
+
+
+                $('#TenantForm #PersonName').val(AppName);
+                $('#TenantForm #PersonContactNo').val(AppContact);
+
+            }
+            else {
+                var result = false;
+                if (residenceTableRowsLength > 1 && result == false) {
+
+                    result = fillExistingDataT("residenceTable", personType);
+                    if (result == false) {
+                        $('#TenantForm #PersonName').val('');
+                        $('#TenantForm #PersonContactNo').val('');
+                    }
+                    // alert(result);
+                }
+                if (workOfficeRowsTable > 1 && result == false) {
+
+                    result = fillExistingDataT("workOfficeTable", personType);
+                    if (result == false) {
+                        $('#TenantForm #PersonName').val('');
+                        $('#TenantForm #PersonContactNo').val('');
+                    }
+                    // alert(result);
+                }
+                if (salarySlipRowsTable > 1 && result == false) {
+
+                    result = fillExistingDataT("salarySlipTable", personType);
+                    if (result == false) {
+                        $('#TenantForm #PersonName').val('');
+                        $('#TenantForm #PersonContactNo').val('');
+                    }
+                    // alert(result);
+                }
+                if (bankStatementRowsTable > 1 && result == false) {
+                    result = fillExistingDataT("bankStatementTable", personType);
+                    if (result == false) {
+                        $('#TenantForm #PersonName').val('');
+                        $('#TenantForm #PersonContactNo').val('');
+                    }
+                    // alert(result);
+                }
+                if (tenantRowsTable > 1 && result == false) {
+
+                    result = fillExistingDataT("tenantTable", personType);
+                    if (result == false) {
+                        $('#TenantForm #PersonName').val('');
+                        $('#TenantForm #PersonContactNo').val('');
+                    }
+                    // alert(result);
+                }
+
+
+
+            }
+
+        });
+
+        //===================================//
+
+
+
+        //====================================//
+        function fillExistingDataT(tableId, personType) {
+
+            var columnNumberOfPersonType = 1; //person type column
+            var isDone = false;
+
+            $.each($('#' + tableId).find('tr'), function () {
+
+                var tdPersonType = $(this).find('td').eq(columnNumberOfPersonType).text();
+
+                var AppName = $(this).find('td').eq(2).text();
+                var AppContact = $(this).find('td').eq(3).text();
+
+
+                if (tdPersonType == personType) {
+
+                    $('#TenantForm #PersonName').val('');
+                    $('#TenantForm #PersonContactNo').val('');
+
+                    $('#TenantForm #PersonName').val(AppName);
+                    $('#TenantForm #PersonContactNo').val(AppContact);
+                    // $('#ResidenceForm #PersonCNIC').val(AppCNIC);
+                    isDone = true;
+                    return false;
+                }
+
+            });
+            return isDone;
+        }
+        //===================================//
+
+        $('#CreateTenant').click(function () {
+            if ($('#TenantForm').valid()) {
+                var dataToPost = $('#TenantForm').serializeObject();
+                dataToPost.InquiryId = $('#InquiryId').val();
+                dataToPost.OldPersonType = $('#TenantForm #OldPersonType').val();//.find('#OldPersonType').val();
+
+                ShowLoader(true, "Loading...");
+
+                $.post('@Url.Action("CreateTenant", "Inquiry")', { model: dataToPost },
+                    function (data) {
+                        if (data.status == 1) {
+                            //show message here for alert
+                            toastr.success(data.message, "Tenant Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            //add data to Residence Table
+                            addDataToTenantTable(data.data);
+                            //Reset Residence Form.
+                            TReset();
+                            ShowLoader(false, "");
+                        }
+                        else {
+                            toastr.error(data.message, "Tenant Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+                            ShowLoader(false, "");
+                        }
+                    }).fail(function (jqXHR) {
+                        ShowLoader(false, "");
+                    });
+            } else {
+                toastr.error("Some required field are missing.", "Tenant Verification Details", { tapToDismiss: false, timeOut: 0, extendedTimeOut: 0 });
+            }
+        });
+
+        function addDataToTenantTable(TenantList) {
+
+            var htmlRow = "";
+
+            $(TenantList).each(function (i, e) {
+
+                htmlRow += "<tr id='" + e.TenantVerificationId + "'>" +
+                             "<td class='hidden'><label id='TenantVerificationId'>" +
+                             e.TenantVerificationId + "</label><label id='OldPersonType'>" +
+                             e.PersonType + "</label></td>" +
+                                  "<td id='PersonType'>" + e.PersonType + "</td>" +
+                                "<td id='PersonName'>" + e.PersonName + "</td>" +
+                                "<td id='PersonContactNo'>" + e.PersonContactNo + "</td>" +
+                                "<td id='TenantAddress'>" + e.TenantAddress + "</td>" +
+                                "<td id='NearestLandMark'>" + e.NearestLandMark + "</td>" +
+                                "<td > " +
+                                 "   <button type='button' class='btn btn-primary' value='" + e.TenantVerificationId + "' id='TenantEdit' onclick='TEdit(this);'><span class='glyphicon glyphicon-edit'>&nbsp</span> Edit </button> " +
+                                "</td> " +
+                            "</tr> ";
+
+            });
+
+            $('#tenantTable tbody').find('tr').remove();
+            $('#tenantTable').append(htmlRow);
+            $('#tenantTable').removeClass('hidden');
+
+        }
+
+        function TEdit(button) {
+
+            tr = $('#tenantTable').find('#' + button.value);
+            var form = $('#TenantForm');
+
+            $(form).find('#PersonType').val($(tr).find('#PersonType').html().trim());
+            $(form).find('#OldPersonType').val($(tr).find('#OldPersonType').html().trim());
+
+            $(form).find('#PersonName').val($(tr).find('#PersonName').html().trim());
+
+
+            $(form).find('#PersonContactNo').val($(tr).find('#PersonContactNo').html().trim());
+            $(form).find('#TenantAddress').val($(tr).find('#TenantAddress').html().trim());
+            $(form).find('#NearestLandMark').val($(tr).find('#NearestLandMark').html().trim());
+
+            $(form).find('#TenantVerificationId').val($(tr).find('#TenantVerificationId').html().trim());
+
+        }
+        function TReset() {
+
+            var form = $('#TenantForm');
+            $(form).get(0).reset();
+            $("#TenantForm input:hidden").val('');
+
+        }
+    </script>
+
+}

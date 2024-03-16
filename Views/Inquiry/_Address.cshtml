@@ -1,0 +1,130 @@
+﻿@model VerificationSystem.DB.Address
+@using VerificationSystem.Extensions
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            @using (Html.BeginForm("Address", "Inquiry", FormMethod.Post, 
+                new { @id = Model.PersonType.Replace(" ", "") + Model.VerificationType.Replace(" ", "") }))
+            {
+                <div class="box-body">
+                   
+                    
+                     @Html.HiddenFor( x=> x.InquiryId)
+                    @Html.HiddenFor(x => x.PersonType) 
+                    @Html.HiddenFor(x=> x.VerificationType)
+        
+
+                    @Html.HiddenFor(x => x.AddressId)
+
+
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                        <label > Full Address:</label> <strong>@Model.FullAddress</strong>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+
+                    <div class="row">
+
+
+                        <div class="col-md-12">
+                          
+                            @*Plot No.*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(x => x.Address1, "Plot / House / Building")
+                                        @Html.TextBoxFor(x => x.Address1    , new { @class = "form-control", placeholder = "Enter here plot/House/Building No...." })
+                                        @Html.ValidationMessageFor(x => x.Address1, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*PlotName*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.Address2, "Flate / portion")
+                                        @Html.TextBoxFor(x => x.Address2, new { @class = "form-control", placeholder = "Enter here Plot/House/Building Name..." })
+                                        @Html.ValidationMessageFor(x => x.Address2, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*PortionNo*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.Address3, "Area / Sector / Phase / Block")
+                                        @Html.TextBoxFor(x => x.Address3, new { @class = "form-control", placeholder = "Enter here plate or portion No...." })
+                                        @Html.ValidationMessageFor(x => x.Address3, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            @*PortionName*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.Descriptions, "Other Description ")
+                                        @Html.TextBoxFor(x => x.Descriptions, new { @class = "form-control", placeholder = "Enter here Flate or protion name..." })
+                                        @Html.ValidationMessageFor(x => x.Descriptions, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            @*City*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.City)
+                                        @Html.TextBoxFor(x => x.City, new { @class = "form-control", placeholder = "Enter here City" })
+                                        @Html.ValidationMessageFor(x => x.City, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Province*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.LabelFor(m => m.Province)
+                                        @Html.TextBoxFor(x => x.Province, new { @class = "form-control", placeholder = "Enter here Privnce...." })
+                                        @Html.ValidationMessageFor(x => x.Province, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                          
+
+                            <div class="col-md-4">
+
+                                <br />
+                                <div class="form-group">
+                                    <input type="button" class="btn btn-primary btn-block address" value="Save"  onclick="SaveAddress('@Model.PersonType.Replace(" ","")@Model.VerificationType.Replace(" ", "")','@Model.PersonType', '@Model.VerificationType' );"             
+                                            id="@Model.PersonType.Replace(" ","")@Model.VerificationType.Replace(" ", "")" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

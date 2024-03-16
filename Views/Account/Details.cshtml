@@ -1,0 +1,90 @@
+﻿@model VerificationSystem.DB.ApplicationUser
+
+<div class="row">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="box box-primary">
+            <div class="box-body box-profile">
+
+
+                <h3 align="center"><strong>User Details</strong></h3>
+
+                <h5 class="text-muted text-center">Details of User <strong> '@Model.UserName' </strong></h5>
+
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>User Role(s)</b>
+                        <strong> <a class="pull-right">@ViewBag.RoleName</a></strong>
+                    </li>
+
+                    <li class="list-group-item">
+                        <b>Branch</b>
+                        <strong> <a class="pull-right">@Html.DisplayFor(model => model.Branch.Name)</a></strong>
+                    </li>
+                    @if (!string.IsNullOrWhiteSpace(Model.CustomerCode))
+                    {
+                        <li class="list-group-item">
+                            <b>Customer Code</b>
+                            <strong> <a class="pull-right">@Html.DisplayFor(model => model.CustomerCode)</a></strong>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Branch Code</b>
+                            <strong> <a class="pull-right">@Html.DisplayFor(x => x.CustomerBranch.Name)</a></strong>
+                        </li>
+                    }
+                    <li class="list-group-item">
+                        <b>UserName</b>
+                        <strong> <a class="pull-right">@Html.DisplayFor(model => model.UserName)</a></strong>
+                    </li>
+                    <li class="list-group-item">
+                        <b>First Name</b>
+                        <strong> <a class="pull-right">@Html.DisplayFor(model => model.FirstName)</a></strong>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Last Name</b>
+                        <strong> <a class="pull-right">@Html.DisplayFor(model => model.LastName)</a></strong>
+                    </li>
+                    <li class="list-group-item">
+                        <b>@Html.DisplayNameFor(model => model.Email)</b>
+                        <strong> <a class="pull-right">@Html.DisplayFor(model => model.Email)</a></strong>
+                    </li>
+                    
+                    <li class="list-group-item">
+                        <b>Address</b>
+
+                    </li>
+                    <li class="list-group-item" align="right">
+                        <b><a>@Html.DisplayFor(model => model.Address)</a></b>
+
+                    </li>
+                    <li class="list-group-item">
+                        <b>@Html.DisplayName("Is Active? ")</b>
+
+                        @if (Model.DisableDate == null)
+                        {
+                            <strong class="pull-right">@Html.CheckBox("IsActive", true, new { disabled = "disabled" })</strong>
+
+
+                        }
+                        else
+                        {
+
+                            <strong class="pull-right">
+                                @Html.CheckBox("IsActive", false, new { disabled = "disabled"})
+                            </strong>
+
+                        }
+                    </li>
+
+
+                </ul>
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+
+

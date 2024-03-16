@@ -1,0 +1,103 @@
+﻿@model List<VerificationSystem.Models.AccountIndexVM>
+
+@using GridMvc.Html;
+@{
+    ViewBag.Title = "All Users";
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3><strong>All Users</strong></h3>
+                <br />
+                <p>
+                    @Html.ActionLink("Register New User", "Register", null, new { @class = "btn btn-default" })
+                </p>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+
+
+            <div class="box-body">
+
+
+                <div>
+                    @helper GetActionLink(string id)
+                    {
+if (User.IsInRole(constant.Roles.SuperAdmin))
+{
+            @Html.ActionLink("Edit", "Edit", new { id = id })
+            <span>|</span>
+            @Html.ActionLink("Details", "Details", new { id = id })
+
+}
+}
+
+
+                    @helper GetCompanyName(VerificationSystem.DB.Company company)
+                    {
+if (company != null)
+{
+            @company.Name
+}
+}
+
+
+                    @Html.Grid(Model).Named("UsersGrid").Columns(c =>
+{
+
+    c.Add(x => x.UserName).Titled("User Name").Filterable(true).Sortable(true);
+    //have to check
+    //c.Add().Titled("Company").Sanitized(false).Encoded(false).RenderValueAs(x => GetCompanyName(x.Company));
+    c.Add(x => x.CompanyName).Titled("Company").Filterable(true).Sortable(true);
+
+    c.Add(x => x.FirstName).Titled("First Name").Filterable(true).Sortable(true);
+    c.Add(x => x.LastName).Titled("Last Name").Filterable(true).Sortable(true);
+    c.Add(x => x.Roles).Titled("Roles").Filterable(true).Sortable(true);
+
+    c.Add(x => x.BranchName).Titled("Branch").Filterable(true).Sortable(true);
+
+    c.Add(x => x.CustomerBranchName).Titled("Customer Branch").Filterable(true).Sortable(true);
+
+    c.Add(x => x.DisableDate).Titled("Disabled Date").Format("{0:dd-MM-yyyy}");
+
+    // c.Add().Titled("Is Active?").Sanitized(false).Encoded(false).SetWidth(30).RenderValueAs(o => Html.CheckBox("checked", o.DisableDate == null, new { @disabled = "disabled" }));
+    c.Add().SetWidth(150).Titled("Actions").Sanitized(false).Encoded(false).RenderValueAs(o => GetActionLink(o.UserId));
+
+}).WithPaging(10).EmptyText("No users found..")
+
+                </div>
+
+
+
+
+            </div>
+            <br />
+            <div class="box-footer">
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section styles{
+    @Styles.Render("~/Content/Gridmvc")
+}
+@section scripts{
+    @Scripts.Render("~/bundles/Gridmvc")
+}

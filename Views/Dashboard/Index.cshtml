@@ -1,0 +1,133 @@
+﻿@model VerificationSystem.Models.Dashboard.DashboardVM
+@{
+    ViewBag.Title = "Index";
+    List<string> bootStrapClasses = new List<string> { "bg-green", "bg-light-blue", "bg-orange", "bg-red", "bg-blue", "bg-teal" };
+    <style>
+        .content-wrapper {
+            background-color: #191c20;
+        }
+    </style>
+
+}
+
+
+
+<div class="row">
+
+
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box" style="background-color:#222d32; color:white; min-height:70px;">
+            <span class="info-box-icon bg-green" style="height:70px; line-height:70px;"><i class="fa fa-hourglass-end"></i></span>
+            <a href="@Url.Action("Index","Inquiry")?st=@constant.Status.InProgress" target="_blank" style="color:white;">
+                <div class="info-box-content">
+                    <span class="info-box-text">InProgress</span>
+                    <span class="info-box-number">@Model.MainCountVM.InProgressCount</span>
+                </div>
+            </a>
+                <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+ 
+
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box" style="background-color:#222d32; color:white; min-height:70px;">
+            <span class="info-box-icon bg-warning" style="height:70px; line-height:70px;"><i class="fa fa-check-square-o"></i></span>
+            <a href="@Url.Action("Index","Inquiry")?st=@constant.Status.PartialComplete" target="_blank" style="color:white;">
+                <div class="info-box-content">
+                    <span class="info-box-text">Partial</span>
+                    <span class="info-box-number">@Model.MainCountVM.PartialCompletedCount</span>
+                </div>
+            </a>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box" style="background-color:#222d32; color:white; min-height:70px;">
+            <span class="info-box-icon bg-lime" style="height:70px; line-height:70px;"><i class="fa fa-check-square"></i></span>
+            <a href="@Url.Action("Index","Inquiry")?st=@constant.Status.Completed" target="_blank" style="color:white;">
+                <div class="info-box-content">
+                    <span class="info-box-text">Completed</span>
+                    <span class="info-box-number">@Model.MainCountVM.CompletedCount</span>
+                </div>
+            </a>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box" style="background-color:#222d32; color:white; min-height:70px;">
+            <span class="info-box-icon bg-yellow" style="height:70px; line-height:70px;"><i class="fa  fa-shield"></i></span>
+            <a href="@Url.Action("Index","Inquiry")?st=@constant.Status.QualityCheck" target="_blank" style="color:white;">
+                <div class="info-box-content">
+                    <span class="info-box-text">QC</span>
+                    <span class="info-box-number">@Model.MainCountVM.QCCount</span>
+                </div>
+            </a>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+</div>
+<div class="row">
+
+
+ 
+   
+ 
+
+</div>
+<div class="row">
+
+  
+   
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box" style="background-color:#222d32; color:white; min-height:70px;">
+            <span class="info-box-icon bg-danger" style="height:70px; line-height:70px;"><i class="fa fa-bank"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Companies</span>
+                <span class="info-box-number">@Model.MainCountVM.CompanyCount</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+   
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box" style="background-color:#222d32; color:white; min-height:70px;">
+            <span class="info-box-icon bg-teal" style="height:70px; line-height:70px;"><i class="fa fa-pinterest-p"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Products</span>
+                <span class="info-box-number">@Model.MainCountVM.ProductCount</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+
+</div>
+
+
+
+
+@section Scripts{
+
+    <script src="~/UI/Other/chartjs/Chart.bundle.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            initDonutVerificationType();
+            initDonutProductWiseInquiry();
+          
+
+        });
+
+
+
+
+    </script>
+}
